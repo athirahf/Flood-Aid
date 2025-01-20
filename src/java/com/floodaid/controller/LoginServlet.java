@@ -1,5 +1,6 @@
 package com.floodaid.controller;
 
+import com.floodaid.model.User;
 import com.floodaid.model.UserDAO;
 
 import javax.servlet.ServletException;
@@ -20,27 +21,36 @@ public class LoginServlet extends HttpServlet {
         try {
             // Validate credentials
             UserDAO userDAO = new UserDAO();
-            String role = userDAO.validateUser(username, password);
+            User user = userDAO.validateAndGetUser(username, password);
 
-            if (role != null) {
-                // Create a session
+            if (user != null) {
+                // Create a session and store attributes
                 HttpSession session = request.getSession();
-                session.setAttribute("username", username);
-                session.setAttribute("role", role);
+                session.setAttribute("userID", user.getUserID()); // Use consistent naming
+                session.setAttribute("username", user.getUsername());
+                session.setAttribute("role", user.getRole());
+                session.setAttribute("name", user.getName());
+
+                // Log session attributes for debugging
+                System.out.println("Login Successful:");
+                System.out.println("userID: " + user.getUserID());
+                System.out.println("username: " + user.getUsername());
+                System.out.println("role: " + user.getRole());
+                System.out.println("name: " + user.getName());
 
                 // Redirect based on role
-                switch (role) {
+                switch (user.getRole()) {
                     case "Admin":
-                        response.sendRedirect("admin-index.html");
+                        response.sendRedirect("admin-index.jsp");
                         break;
                     case "Volunteer":
-                        response.sendRedirect("volunteer-index.html");
+                        response.sendRedirect("volunteer-index.jsp");
                         break;
                     case "User":
-                        response.sendRedirect("users-index.html");
+                        response.sendRedirect("users-index.jsp");
                         break;
                     case "Shelter":
-                        response.sendRedirect("shelter-index.html");
+                        response.sendRedirect("shelter-index.jsp");
                         break;
                     default:
                         response.sendRedirect("pages-login.html?error=invalid_role");

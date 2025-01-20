@@ -16,6 +16,15 @@ public class User {
         this.username = username;
         this.password = password;
     }
+    
+    public User() {
+        userID = "unknown";
+        name = "unknown";
+        email = "unknown";
+        role = "unknown";
+        username = "unknown";
+        password = "unknown";
+    }
 
     public String getUserID() {
         return userID;
