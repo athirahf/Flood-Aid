@@ -149,7 +149,7 @@
 
       <!-- Manage Shelter Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-shelters.html">
+        <a class="nav-link collapsed" href="AdminSheltersServlet">
           <i class="bi bi-shield-plus"></i>
           <span>Manage Shelter</span>
         </a>
