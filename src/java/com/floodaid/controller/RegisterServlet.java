@@ -1,53 +1,101 @@
 package com.floodaid.controller;
 
-import com.floodaid.model.User;
-import com.floodaid.model.UserDAO;
-
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.floodaid.model.User;
+import com.floodaid.model.UserDAO;
 
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    private static final String URL = "jdbc:derby://localhost:1527/FloodAid";
+    private static final String USER = "FloodAid";
+    private static final String PASSWORD = "FloodAid";
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            System.out.println("Starting registration process...");
 
-            // Retrieve form data
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String role = request.getParameter("role");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+        // Retrieve form parameters
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String role = request.getParameter("role");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password"); // Stored as plain text (as per request)
 
-            System.out.println("Form Data: Name=" + name + ", Email=" + email + 
-                               ", Role=" + role + ", Username=" + username);
+        // Validate input fields
+        if (name == null || email == null || role == null || username == null || password == null ||
+                name.isEmpty() || email.isEmpty() || role.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/pages-register.html?error=missing_fields");
+            return;
+        }
 
-            // Generate user_ID
-            String userID = "USR" + System.currentTimeMillis();
-            System.out.println("Generated user_ID: " + userID);
+        // Validate email format
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            response.sendRedirect(request.getContextPath() + "/pages-register.html?error=invalid_email");
+            return;
+        }
 
-            // Create User object
-            User user = new User(userID, name, email, role, username, password);
+        // Validate password length
+        if (password.length() < 6) {
+            response.sendRedirect(request.getContextPath() + "/pages-register.html?error=weak_password");
+            return;
+        }
 
-            // Save user to database
-            UserDAO userDAO = new UserDAO();
-            boolean isRegistered = userDAO.registerUser(user);
+        User newUser = new User(name, email, role, username, password);
+        UserDAO userDAO = new UserDAO();
 
-            if (isRegistered) {
-                System.out.println("Registration successful!");
-                response.sendRedirect("pages-login.html?success=true");
+        // Register user and get user ID
+        int userID = userDAO.registerUser(newUser);
+
+        if (userID > 0) {
+            // Insert into role-specific table
+            boolean roleInserted = insertUserRole(userID, role);
+            if (roleInserted) {
+                response.sendRedirect(request.getContextPath() + "/pages-login.html?success=registered");
             } else {
-                System.out.println("Registration failed.");
-                response.sendRedirect("pages-register.html?error=registration_failed");
+                response.sendRedirect(request.getContextPath() + "/pages-register.html?error=role_insert_failed");
             }
-        } catch (Exception e) {
+        } else {
+            response.sendRedirect(request.getContextPath() + "/pages-register.html?error=registration_failed");
+        }
+    }
+
+    private boolean insertUserRole(int userID, String role) {
+        String sql = "";
+
+        switch (role.toLowerCase()) {
+            case "admin":
+                sql = "INSERT INTO ADMIN (user_ID, admin_status) VALUES (?, 'Active')";
+                break;
+            case "user":
+                sql = "INSERT INTO VICTIM (user_ID, shelter_ID) VALUES (?, NULL)";
+                break;
+            case "volunteer":
+                sql = "INSERT INTO VOLUNTEER (user_ID, vol_employment, availability, is_leader, shelter_ID) VALUES (?, NULL, 'Available', 0, NULL)";
+                break;
+            default:
+                return false;
+        }
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userID);
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("pages-register.html?error=internal_error");
+            return false;
         }
     }
 }

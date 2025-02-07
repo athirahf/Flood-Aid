@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="checkSession.jsp" %>
+<jsp:include page="checkSession.jsp" />
 
  <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +78,7 @@
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6><%= username %></h6>
+                <h6><%= session.getAttribute("username") %></h6>
                 <span>Admin</span>
               </li>
               <li>
@@ -159,7 +159,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-profile.html">
+        <a class="nav-link collapsed" href="AdminProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -183,7 +183,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="admin-index.jsp">Home</a></li>
-                <li class="breadcrumb-item active">Welcome, <%= name %>!</li>
+                <li class="breadcrumb-item active">Welcome, <%= session.getAttribute("name") %>!</li>
             </ol>
         </nav>
     </div>

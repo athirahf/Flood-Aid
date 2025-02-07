@@ -1,67 +1,62 @@
 package com.floodaid.controller;
 
-import com.floodaid.model.User;
-import com.floodaid.model.UserDAO;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import com.floodaid.model.User;
+import com.floodaid.model.UserDAO;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        try {
-            // Validate credentials
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.validateAndGetUser(username, password);
+        // Validate user input
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+            response.sendRedirect("pages-login.html?error=missing_fields");
+            return;
+        }
 
-            if (user != null) {
-                // Create a session and store attributes
-                HttpSession session = request.getSession();
-                session.setAttribute("userID", user.getUserID()); // Use consistent naming
-                session.setAttribute("username", user.getUsername());
-                session.setAttribute("role", user.getRole());
-                session.setAttribute("name", user.getName());
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.validateUser(username, password); // ✅ Retrieve user object from DB
 
-                // Log session attributes for debugging
-                System.out.println("Login Successful:");
-                System.out.println("userID: " + user.getUserID());
-                System.out.println("username: " + user.getUsername());
-                System.out.println("role: " + user.getRole());
-                System.out.println("name: " + user.getName());
+        if (user != null) {
+            // ✅ Create session and store necessary attributes
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setAttribute("userID", user.getUserID()); // ✅ Store userID in session
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("role", user.getRole());
+            session.setAttribute("name", user.getName());
 
-                // Redirect based on role
-                switch (user.getRole()) {
-                    case "Admin":
-                        response.sendRedirect("admin-index.jsp");
-                        break;
-                    case "Volunteer":
-                        response.sendRedirect("volunteer-index.jsp");
-                        break;
-                    case "User":
-                        response.sendRedirect("users-index.jsp");
-                        break;
-                    case "Shelter":
-                        response.sendRedirect("shelter-index.jsp");
-                        break;
-                    default:
-                        response.sendRedirect("pages-login.html?error=invalid_role");
-                }
-            } else {
-                // Invalid credentials
-                response.sendRedirect("pages-login.html?error=invalid_credentials");
+            session.setMaxInactiveInterval(30 * 60); // ✅ Set session timeout (30 minutes)
+
+            // Redirect based on user role
+            switch (user.getRole().toLowerCase()) {
+                case "admin":
+                    response.sendRedirect("admin-index.jsp");
+                    break;
+                case "victim":
+                    response.sendRedirect("users-index.html");
+                    break;
+                case "volunteer":
+                    response.sendRedirect("volunteer-index.html");
+                    break;
+                default:
+                    response.sendRedirect("homepage.html");
+                    break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("pages-login.html?error=internal_error");
+        } else {
+            response.sendRedirect("pages-login.html?error=invalid_credentials");
         }
     }
 }
