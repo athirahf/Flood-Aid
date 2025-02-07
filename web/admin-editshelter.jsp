@@ -148,7 +148,7 @@
 
       <!-- Manage Users Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-users.jsp>
+        <a class="nav-link collapsed" href="AdminUsersServlet>
           <i class="bi bi-person-lines-fill"></i>
           <span>Manage Users</span>
         </a>
@@ -198,7 +198,7 @@
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-10 offset-lg-1">
 
           <div class="card">
             <div class="card-body">
@@ -209,28 +209,27 @@
                     <input type="hidden" name="shelterID" value="<%= shelter.getShelterID() %>">
                   
                     <div class="row mb-3">
-                      <label for="shelterName" class="col-md-4 col-lg-3 col-form-label">Shelter Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="shelterName" type="text" class="form-control" id="shelterName" value="<%= shelter.getShelterName() %>">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="shelterSpace" class="col-md-4 col-lg-3 col-form-label">Capacity</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="shelterSpace" type="number" class="form-control" id="shelterSpace" value="<%= shelter.getShelterCapacity() %>">
-                      </div>
+                        <div class="col-md-6">
+                            <label for="shelterName" class="col-md-4 col-lg-3 col-form-label">Shelter Name</label>
+                            <input name="shelterName" type="text" class="form-control" id="shelterName" value="<%= shelter.getShelterName() %>">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="shelterSpace" class="col-md-4 col-lg-3 col-form-label">Capacity</label>
+                            <input name="shelterSpace" type="number" class="form-control" id="shelterSpace" value="<%= shelter.getShelterCapacity() %>">
+                        </div>
                     </div>
                       
                     <div class="row mb-3">
-                        <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                        <div class="col-md-8 col-lg-9">
+                        <div class="col-md-12">
+                            <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                             <textarea id="address" name="address" class="form-control"><%= shelter.getShelterAddress() %></textarea>
                         </div>
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <a href="AdminSheltersServlet" class="btn btn-secondary">Cancel</a>
+                      <button type="submit" class="btn btn-primary">Update</button>
+                      <a href="DeleteShelterServlet?shelterID=<%= shelter.getShelterID() %>" class="btn btn-danger" onclick="return confirmDelete();">Delete</a>
                     </div>
                   </form>
             </div>
@@ -238,8 +237,6 @@
         </div>
       </div>
     </section>
-
-    <a type="reset" class="btn btn-warning" href="AdminSheltersServlet">Back to Shelter List</a>
 
   </main><!-- End #main -->
 
@@ -271,6 +268,12 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  
+  <script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+    }
+  </script>
 
 </body>
 

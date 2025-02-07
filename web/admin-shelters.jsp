@@ -113,7 +113,7 @@
 
     <!-- Manage Signal Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-signal.html">
+      <a class="nav-link collapsed" href="admin-signal.jsp">
         <i class="bi bi-broadcast"></i>
         <span>Manage Signal</span>
       </a>
@@ -121,7 +121,7 @@
 
     <!-- Manage Need Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-need.html">
+      <a class="nav-link collapsed" href="admin-need.jsp">
         <i class="bi bi-box-seam"></i>
         <span>Manage Need</span>
       </a>
@@ -130,7 +130,7 @@
 
     <!-- Manage Users Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-users.html">
+      <a class="nav-link collapsed" href="AdminUsersServlet">
         <i class="bi bi-person-lines-fill"></i>
         <span>Manage Users</span>
       </a>
@@ -217,7 +217,7 @@
                                         <a href="#" data-bs-toggle="dropdown" class="btn btn-info btn-md bi-pencil-square"></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a class="dropdown-item" href="admin-editshelter.jsp?shelterID=<%= shelter.getShelterID() %>">Edit</a></li>
-                                            <li><a class="dropdown-item" href="DeleteShelterServlet?shelterID=<%= shelter.getShelterID() %>">Delete</a></li>
+                                            <li><a class="dropdown-item" href="DeleteShelterServlet?shelterID=<%= shelter.getShelterID() %>" onclick="return confirmDelete();">Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -275,6 +275,12 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  
+  <script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+    }
+  </script>
 
 </body>
 
