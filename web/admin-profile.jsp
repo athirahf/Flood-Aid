@@ -84,7 +84,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="admin-profile.jsp">
+              <a class="dropdown-item d-flex align-items-center" href="AdminProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -122,7 +122,7 @@
 
       <!-- Manage Signal Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-signal.html">
+        <a class="nav-link collapsed" href="admin-signal.jsp">
           <i class="bi bi-broadcast"></i>
           <span>Manage Signal</span>
         </a>
@@ -130,7 +130,7 @@
 
       <!-- Manage Need Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-need.html">
+        <a class="nav-link collapsed" href="admin-need.jsp">
           <i class="bi bi-box-seam"></i>
           <span>Manage Need</span>
         </a>
@@ -139,7 +139,7 @@
 
       <!-- Manage Users Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-users.html">
+        <a class="nav-link collapsed" href="AdminUsersServlet">
           <i class="bi bi-person-lines-fill"></i>
           <span>Manage Users</span>
         </a>
@@ -157,7 +157,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-profile.jsp">
+        <a class="nav-link collapsed" href="AdminProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>

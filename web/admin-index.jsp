@@ -53,13 +53,6 @@
         <i class="bi bi-list toggle-sidebar-btn"></i>
       </div><!-- End Logo -->
 
-      <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-          <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-      </div><!-- End Search Bar -->
-
       <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
 
@@ -86,7 +79,7 @@
               </li>
 
               <li>
-                <a class="dropdown-item d-flex align-items-center" href="admin-profile.html">
+                <a class="dropdown-item d-flex align-items-center" href="AdminProfileServlet">
                   <i class="bi bi-person"></i>
                   <span>My Profile</span>
                 </a>
@@ -124,7 +117,7 @@
 
       <!-- Manage Signal Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-signal.html">
+        <a class="nav-link collapsed" href="admin-signal.jsp">
           <i class="bi bi-broadcast"></i>
           <span>Manage Signal</span>
         </a>
@@ -132,7 +125,7 @@
 
       <!-- Manage Need Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-need.html">
+        <a class="nav-link collapsed" href="admin-need.jsp">
           <i class="bi bi-box-seam"></i>
           <span>Manage Need</span>
         </a>
@@ -141,7 +134,7 @@
 
       <!-- Manage Users Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-users.html">
+        <a class="nav-link collapsed" href="AdminUsersServlet">
           <i class="bi bi-person-lines-fill"></i>
           <span>Manage Users</span>
         </a>

@@ -110,7 +110,7 @@
 
     <!-- Manage Signal Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-signal.html">
+      <a class="nav-link collapsed" href="admin-signal.jsp">
         <i class="bi bi-broadcast"></i>
         <span>Manage Signal</span>
       </a>
@@ -118,7 +118,7 @@
 
     <!-- Manage Need Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-need.html">
+      <a class="nav-link collapsed" href="admin-need.jsp">
         <i class="bi bi-box-seam"></i>
         <span>Manage Need</span>
       </a>
@@ -127,7 +127,7 @@
 
     <!-- Manage Users Nav -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="admin-users.html">
+      <a class="nav-link collapsed" href="AdminUsersServlet">
         <i class="bi bi-person-lines-fill"></i>
         <span>Manage Users</span>
       </a>
@@ -207,6 +207,7 @@
                     </div>
 
                     <div class="text-center">
+                      <a href="AdminSheltersServlet" class="btn btn-secondary">Cancel</a>
                       <button type="submit" class="btn btn-primary">Register</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
@@ -215,8 +216,6 @@
         </div>
       </div>
     </section>
-
-    <a type="reset" class="btn btn-warning" href="admin-shelters.jsp">Back to Shelter List</a>
 
   </main><!-- End #main -->
 
