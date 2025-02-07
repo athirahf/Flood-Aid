@@ -11,6 +11,7 @@ public class User {
     private int age;
     private String address;
     private String phoneNum;
+    private String registrationTime;
 
     // for getUserByID()
     public User(int userID, String name, String email, String role, String username, String password, String nric, int age, String address, String phoneNum) {
@@ -44,6 +45,21 @@ public class User {
         this.username = username;
         this.password = password;
     }
+    
+    // constructor to retrieve user information
+    public User(int userID, String name, String email, String role, String username, String password, String nric, int age, String address, String phoneNum, String registrationTime) {
+        this.userID = userID;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.nric = nric;
+        this.age = age;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.registrationTime = registrationTime;
+    }
 
     // Getters and Setters
     public int getUserID() { return userID; }
@@ -75,4 +91,7 @@ public class User {
 
     public String getPhoneNum() { return phoneNum; }
     public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
+    
+    public String getRegistrationTime() { return registrationTime; } // ✅ Get as a String
+    public void setRegistrationTime(String registrationTime) { this.registrationTime = registrationTime; } // ✅ Set as a String
 }

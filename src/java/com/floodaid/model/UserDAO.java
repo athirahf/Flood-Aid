@@ -1,6 +1,8 @@
 package com.floodaid.model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private static final String URL = "jdbc:derby://localhost:1527/FloodAid";
@@ -143,6 +145,27 @@ public class UserDAO {
             return false;
         }
     }
+    
+    public boolean updateUser(int userID, String name, String nric, int age, String email, String phone, String address) {
+        String sql = "UPDATE USERS SET name = ?, nric = ?, age = ?, email = ?, phoneNum = ?, address = ? WHERE user_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, nric);
+            stmt.setInt(3, age);
+            stmt.setString(4, email);
+            stmt.setString(5, phone);
+            stmt.setString(6, address);
+            stmt.setInt(7, userID);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // Change user password
     public boolean changePassword(String username, String currentPassword, String newPassword) {
@@ -158,6 +181,51 @@ public class UserDAO {
             int rowsUpdated = stmt.executeUpdate();
 
             return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // ✅ Retrieve all users
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT user_ID, name, email, user_role, username, password, nric, age, address, phoneNum, registration_time FROM USERS";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getInt("user_ID"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("user_role"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("nric"),
+                    rs.getInt("age"),
+                    rs.getString("address"),
+                    rs.getString("phoneNum"),
+                    rs.getString("registration_time")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+    
+    public boolean deleteUser(int userID) {
+        String sql = "DELETE FROM USERS WHERE user_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userID);
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
