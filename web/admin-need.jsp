@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="checkSession.jsp" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +8,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>All Signal</title>
+  <title>Manage Need</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -50,96 +53,8 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <!-- <span class="badge bg-primary badge-number">4</span> -->
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
 
         <li class="nav-item dropdown pe-3">
 
@@ -150,7 +65,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Ali</h6>
+              <h6><%= session.getAttribute("username") %></h6>
               <span>Admin</span>
             </li>
             <li>
@@ -158,7 +73,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="admin-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="AdminProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -168,7 +83,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="homepage.html">
+              <a class="dropdown-item d-flex align-items-center" href="LogoutServlet">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Log Out</span>
               </a>
@@ -181,13 +96,14 @@
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
+
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-index.html">
+        <a class="nav-link collapsed" href="admin-index.jsp">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -195,7 +111,7 @@
 
       <!-- Manage Signal Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-signal.html">
+        <a class="nav-link collapsed" href="admin-signal.jsp">
           <i class="bi bi-broadcast"></i>
           <span>Manage Signal</span>
         </a>
@@ -203,7 +119,7 @@
 
       <!-- Manage Need Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-need.html">
+        <a class="nav-link collapsed" href="admin-need.jsp">
           <i class="bi bi-box-seam"></i>
           <span>Manage Need</span>
         </a>
@@ -212,7 +128,7 @@
 
       <!-- Manage Users Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-users.html">
+        <a class="nav-link collapsed" href="AdminUsersServlet">
           <i class="bi bi-person-lines-fill"></i>
           <span>Manage Users</span>
         </a>
@@ -222,7 +138,7 @@
 
       <!-- Manage Shelter Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-shelters.html">
+        <a class="nav-link collapsed" href="AdminSheltersServlet">
           <i class="bi bi-shield-plus"></i>
           <span>Manage Shelter</span>
         </a>
@@ -230,14 +146,14 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-profile.html">
+        <a class="nav-link collapsed" href="AdminProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="homepage.html">
+        <a class="nav-link collapsed" href="LogoutServlet">
           <i class="bi bi-box-arrow-right"></i>
           <span>Log Out</span>
         </a>
@@ -250,12 +166,12 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>All Signal</h1>
+      <h1>All Need</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="admin-index.html">Home</a></li>
-          <li class="breadcrumb-item">Manage Signal</li>
-          <li class="breadcrumb-item active">All Signal</li>
+          <li class="breadcrumb-item"><a href="admin-index.jsp">Home</a></li>
+          <li class="breadcrumb-item">Manage Need</li>
+          <li class="breadcrumb-item active">All Need</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -266,58 +182,140 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">List of All Signal</h5>
+              <h5 class="card-title">List of All Need</h5>
 
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Time Requested</th>
-                    <th scope="col">Date Requested</th>
-                    <th scope="col">Area</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Place</th>
+                    <th scope="col">Date Requested</th>
+                    <th scope="col">Date Approved</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <th scope="row">1</th>
-                    <td>03:05 AM</td>
-                    <td>01/12/2024</td>
-                    <td>Besut, Kelantan</td>
+                    <td>Canned Chicken Curry</td>
+                    <td>50</td>
                     <td><span class="badge bg-warning text-dark">Pending</span></td>
-                    <td>On the tree</td>
+                    <td>20-11-2024</td>
+                    <td>-</td>
                     <td>
                       <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                         <div class="filter">
-                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-danger rounded-pill btn-sm ri-base-station-line"></a>
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
                           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li><a class="dropdown-item" href="#">Send Help</a></li>
-                            <li><a class="dropdown-item" href="#">Abort Mission</a></li>
+                            <li><a class="dropdown-item" href="admin-editneed.jsp">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
                           </ul>
                         </div>
-                      </div>
                     </td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
-                    <td>01:35 AM</td>
-                    <td>06/12/2024</td>
-                    <td>House number 56, Jalan Damai, 75100, Besut, Terengganu</td>
-                    <td><span class="badge bg-success">Completed</span></td>
-                    <td>On the roof</td>
+                    <td>Carton of Mineral Water</td>
+                    <td>10</td>
+                    <td><span class="badge bg-success">Approved</span></td>
+                    <td>15-11-2024</td>
+                    <td>17-11-2024</td>
                     <td>
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                         <div class="filter">
-                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-danger rounded-pill btn-sm ri-base-station-line"></a>
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
                           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li><a class="dropdown-item" href="#">Send Help</a></li>
-                            <li><a class="dropdown-item" href="#">Abort Mission</a></li>
+                            <li><a class="dropdown-item" href="admin-editneed.jsp">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
                           </ul>
                         </div>
-                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Blankets</td>
+                    <td>25</td>
+                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                    <td>13-11-2024</td>
+                    <td>-</td>
+                    <td>
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <div class="filter">
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li><a class="dropdown-item" href="admin-editneed.jsp">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                          </ul>
+                        </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>Gloves</td>
+                    <td>15</td>
+                    <td><span class="badge bg-danger">Rejected</span></td>
+                    <td>10-11-2024</td>
+                    <td>-</td>
+                    <td>
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <div class="filter">
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li><a class="dropdown-item" href="admin-editneed.jsp">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                          </ul>
+                        </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>Torch</td>
+                    <td>25</td>
+                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                    <td>07-11-2024</td>
+                    <td>-</td>
+                    <td>
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <div class="filter">
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li><a class="dropdown-item" href="admin-editneed.html">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                          </ul>
+                        </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>Mini First Aid Kit</td>
+                    <td>75</td>
+                    <td><span class="badge bg-success">Approved</span></td>
+                    <td>01-11-2024</td>
+                    <td>09-11-2024</td>
+                    <td>
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <div class="filter">
+                          <a href="#" href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm bi-pencil-square"></a>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li><a class="dropdown-item" href="admin-editneed.html">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                          </ul>
+                        </div>
                     </td>
                   </tr>
                 </tbody>

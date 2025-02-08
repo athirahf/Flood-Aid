@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="checkSession.jsp" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,8 +13,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/FloodAidLogo.png" rel="icon">
+  <link href="assets/img/FloodAidLogo.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -50,96 +53,8 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <!-- <span class="badge bg-primary badge-number">4</span> -->
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
 
         <li class="nav-item dropdown pe-3">
 
@@ -150,15 +65,15 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Ali</h6>
-              <span>Admin</span>
+              <h6><%= session.getAttribute("username") %></h6>
+              <span>Volunteer</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="admin-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -168,7 +83,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="homepage.html">
+              <a class="dropdown-item d-flex align-items-center" href="LogoutServlet">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Log Out</span>
               </a>
@@ -188,57 +103,44 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-index.html">
+        <a class="nav-link collapsed" href="volunteer-index.jsp">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
-      <!-- Manage Signal Nav -->
+      <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-signal.html">
-          <i class="bi bi-broadcast"></i>
-          <span>Manage Signal</span>
+        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+          <i class="bi bi-people-fill"></i>
+          <span>View Team</span>
         </a>
-      </li><!-- End Manage Signal Nav -->
-
-      <!-- Manage Need Nav -->
+      </li><!-- End View Team Nav -->
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-need.html">
-          <i class="bi bi-box-seam"></i>
+        <a class="nav-link collapsed" href="volunteer-reqneed.jsp">
+          <i class="bi bi-bag-plus"></i>
+          <span>Request Need</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="volunteer-need.jsp">
+          <i class="bi bi-bag-plus-fill"></i>
           <span>Manage Need</span>
         </a>
-      </li><!-- End Manage Need Nav -->
-      
-
-      <!-- Manage Users Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-users.html">
-          <i class="bi bi-person-lines-fill"></i>
-          <span>Manage Users</span>
-        </a>
-      </li><!-- End Manage Users Nav -->
-
-      <!-- <li class="nav-heading">Pages</li> -->
-
-      <!-- Manage Shelter Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-shelters.html">
-          <i class="bi bi-shield-plus"></i>
-          <span>Manage Shelter</span>
-        </a>
-      </li><!-- End Manage Shelter Nav -->
+      </li>
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin-profile.html">
+        <a class="nav-link collapsed" href="volunteer-profile.jsp">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="homepage.html">
+        <a class="nav-link collapsed" href="LogoutServlet">
           <i class="bi bi-box-arrow-right"></i>
           <span>Log Out</span>
         </a>
@@ -247,51 +149,42 @@
     </ul>
 
   </aside><!-- End Sidebar-->
-
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit Need</h1>
+      <h1>Request Need</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="admin-editneed.html">Home</a></li>
-          <li class="breadcrumb-item">Manage Need</li>
-          <li class="breadcrumb-item active">Edit Need</li>
+          <li class="breadcrumb-item"><a href="volunteer-index.jsp">Home</a></li>
+          <li class="breadcrumb-item active">Request Need</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-10 offset-lg-1">
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Edit Need</h5>
+              <h5 class="card-title">Request Need</h5>
 
               <form class="row g-3">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="item" placeholder="Item" value="Canned Chicken Curry">
+                    <input type="text" class="form-control" id="item" placeholder="Item">
                     <label for="item">Item</label>
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="number" class="form-control" id="quantity" placeholder="Quantity" value="50">
-                    <label for="quantity">Quantity</label>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="size" placeholder="Size"  value="-">
-                    <label for="size">Size</label>
-                  </div>
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="quantity" placeholder="Quantity">
+                        <label for="quantity">Quantity</label>
+                    </div>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Update</button>
-                  <button type="reset" class="btn btn-secondary">Clear</button>
-                  <button type="reset" class="btn btn-danger">DELETE</button>
+                    <button type="reset" class="btn btn-secondary">Clear</button>
+                    <button type="submit" class="btn btn-primary">Request</button>
                 </div>
               </form>
 
@@ -300,8 +193,6 @@
         </div>
       </div>
     </section>
-
-    <a type="reset" class="btn btn-warning" href="admin-need.html">Back to Need List</a>
 
   </main><!-- End #main -->
 
