@@ -27,18 +27,18 @@ public class LoginServlet extends HttpServlet {
         }
 
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.validateUser(username, password); // ✅ Retrieve user object from DB
+        User user = userDAO.validateUser(username, password);
 
         if (user != null) {
             // ✅ Create session and store necessary attributes
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            session.setAttribute("userID", user.getUserID()); // ✅ Store userID in session
+            session.setAttribute("userID", user.getUserID());
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
             session.setAttribute("name", user.getName());
 
-            session.setMaxInactiveInterval(30 * 60); // ✅ Set session timeout (30 minutes)
+            session.setMaxInactiveInterval(30 * 60);
 
             // Redirect based on user role
             switch (user.getRole().toLowerCase()) {
