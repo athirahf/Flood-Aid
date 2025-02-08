@@ -45,11 +45,11 @@ public class LoginServlet extends HttpServlet {
                 case "admin":
                     response.sendRedirect("admin-index.jsp");
                     break;
-                case "victim":
-                    response.sendRedirect("users-index.html");
+                case "user":
+                    response.sendRedirect("users-index.jsp");
                     break;
                 case "volunteer":
-                    response.sendRedirect("volunteer-index.html");
+                    response.sendRedirect("volunteer-index.jsp");
                     break;
                 default:
                     response.sendRedirect("homepage.html");
