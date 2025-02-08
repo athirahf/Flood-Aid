@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="checkSession.jsp" %>
+<jsp:include page="checkSession.jsp" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,13 +53,6 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -78,7 +71,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><%= username %></h6>
+              <h6><%= session.getAttribute("username") %></h6>
               <span>User</span>
             </li>
             <li>
@@ -86,7 +79,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.jsp">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -124,7 +117,7 @@
 
       <!-- Send Signal Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-signal.html">
+        <a class="nav-link collapsed" href="users-signal.jsp">
           <i class="bi bi-exclamation-circle"></i>
           <span>Send Signal</span>
         </a>
@@ -132,7 +125,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="users-profile.jsp">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -161,7 +154,7 @@
           <nav>
               <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="users-index.jsp">Home</a></li>
-                  <li class="breadcrumb-item active">Welcome, <%= name %>!</li>
+                  <li class="breadcrumb-item active">Welcome, <%= session.getAttribute("name") %>!</li>
               </ol>
           </nav>
       </div>

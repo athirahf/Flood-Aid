@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>All User</title>
+  <title>Manage User</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -178,8 +178,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="admin-index.jsp">Home</a></li>
-          <li class="breadcrumb-item">Manage Users</li>
-          <li class="breadcrumb-item active">All User</li>
+          <li class="breadcrumb-item active">Manage Users</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

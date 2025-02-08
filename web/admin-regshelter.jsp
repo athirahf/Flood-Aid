@@ -177,7 +177,7 @@
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-10 offset-lg-1">
 
           <div class="card">
             <div class="card-body">
@@ -186,22 +186,19 @@
                   <!-- Profile Edit Form -->
                   <form action="RegisterShelterServlet" method="post">
                     <div class="row mb-3">
-                      <label for="name" class="col-md-4 col-lg-3 col-form-label">Shelter Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="name" type="text" class="form-control" id="name">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="capacity" class="col-md-4 col-lg-3 col-form-label">Total Capacity</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="capacity" type="number" class="form-control" id="capacity">
-                      </div>
+                        <div class="col-md-6">
+                            <label for="name" class="col-md-4 col-lg-3 col-form-label">Shelter Name</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="capacity" class="col-md-4 col-lg-3 col-form-label">Total Capacity</label>
+                            <input name="capacity" type="number" class="form-control" id="capacity">
+                        </div>
                     </div>
                     
                     <div class="row mb-3">
-                        <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                        <div class="col-md-8 col-lg-9">
+                        <div class="col-md-12">
+                            <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                             <textarea id="address" name="address" class="form-control"></textarea>
                         </div>
                     </div>

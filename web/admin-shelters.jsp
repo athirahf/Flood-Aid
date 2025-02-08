@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Shelter</title>
+  <title>Manage Shelter</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -172,8 +172,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="admin-index.jsp">Home</a></li>
-          <li class="breadcrumb-item">Manage Shelters</li>
-          <li class="breadcrumb-item active">Shelter</li>
+          <li class="breadcrumb-item active">Manage Shelters</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -239,7 +238,7 @@
         </div>
         <div class="col-lg-12">
           <div class="text-center">
-              <a href="admin-regshelter.jsp" class="btn btn-info">Register New Shelter</a>
+              <a href="admin-regshelter.jsp" class="btn btn-primary">Register New Shelter</a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="checkSession.jsp" %>
+<jsp:include page="checkSession.jsp" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,21 +53,8 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
 
         <li class="nav-item dropdown pe-3">
 
@@ -78,7 +65,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><%= username %></h6>
+              <h6><%= session.getAttribute("username") %></h6>
               <span>Volunteer</span>
             </li>
             <li>
@@ -86,29 +73,9 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
               </a>
             </li>
             <li>
@@ -144,23 +111,29 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.html">
+        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>
       </li><!-- End View Team Nav -->
-
-      <!-- Register Victim Nav -->
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-regvictim.html">
-          <i class="bi bi-person-plus"></i>
-          <span>Register User/Victim</span>
+        <a class="nav-link collapsed" href="volunteer-reqneed.jsp">
+          <i class="bi bi-bag-plus"></i>
+          <span>Request Need</span>
         </a>
-      </li><!-- End Register Victim Nav -->
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="volunteer-need.jsp">
+          <i class="bi bi-bag-plus-fill"></i>
+          <span>Manage Need</span>
+        </a>
+      </li>
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.html">
+        <a class="nav-link collapsed" href="volunteer-profile.jsp">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -184,7 +157,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="volunteer-index.jsp">Home</a></li>
-          <li class="breadcrumb-item active">Welcome, <%= name %>!</li>
+          <li class="breadcrumb-item active">Welcome, <%= session.getAttribute("name") %>!</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
