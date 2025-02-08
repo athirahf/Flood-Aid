@@ -1,6 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.floodaid.model.User" %>
 <jsp:include page="checkSession.jsp" />
 
+<%
+    // Retrieve user object from session
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("pages-login.html?error=session_expired");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -157,38 +166,34 @@
               <h5 class="card-title">Fill in this form </h5>
 
               <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                    <div class="col-sm-12">
-                        <label for="inputPlace" class="col-sm-2 col-form-label">Current Place</label>
-                        <input 
-                           type="text" 
-                           class="form-control" 
-                           id="inputPlace" 
-                           placeholder="Enter Place" 
-                           data-bs-toggle="tooltip" 
-                           data-bs-placement="top" 
-                           title="E.g. Inside the house, on the rooftop, etc.">
-                    </div>
-                </div>
+              <form action="SendSignalServlet" method="POST">
+    <div class="row mb-3">
+        <label for="inputPlace" class="col-md-4 col-lg-3 col-form-label">Current Place</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="inputPlace" type="text" class="form-control" id="inputPlace" placeholder="Enter Place" required>
+        </div>
+    </div>
 
-                <div class="row mb-3">
-                    <div class="col-sm-6">
-                        <label for="inputArea" class="col-sm-2 col-form-label">Area</label> <!--area is not state!-->
-                        <input type="text" class="form-control" id="inputArea" placeholder="Enter your area">
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="inputPostcode" class="col-sm-2 col-form-label">Postcode</label>
-                        <input type="text" class="form-control" id="inputPostcode" placeholder="Enter postcode">
-                    </div>
-                </div>
-                  
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="reset" class="btn btn-secondary">Clear</button>
-                </div>
-                
-              </form><!-- End General Form Elements -->
+    <div class="row mb-3">
+        <label for="inputArea" class="col-md-4 col-lg-3 col-form-label">Area</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="inputArea" type="text" class="form-control" id="inputArea" placeholder="Enter your area" required>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="inputPostcode" class="col-md-4 col-lg-3 col-form-label">Postcode</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="inputPostcode" type="text" class="form-control" id="inputPostcode" placeholder="Enter postcode" required>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Send Signal</button>
+    </div>
+</form>
+
+              <!-- End General Form Elements -->
             </div>
           </div>
         </div>

@@ -1,6 +1,16 @@
+<%@ page import="com.floodaid.model.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
 
+<%
+    // Retrieve user object set in UsersProfileServlet
+    User user = (User) session.getAttribute("user");
+
+    if (user == null) {
+        response.sendRedirect("pages-login.html?error=session_expired");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -168,137 +178,94 @@
           <div class="card">
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered">
+             <ul class="nav nav-tabs nav-tabs-bordered">
+    <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#emergency-contact">Emergency Contact</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+    </li>
+</ul>
 
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
-                </li>
+<div class="tab-content pt-2">
+    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+        <h5 class="card-title">Profile Details</h5>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">Full Name</div>
+            <div class="col-lg-9 col-md-8"><%= user.getName() %></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">NRIC</div>
+            <div class="col-lg-9 col-md-8"><%= user.getNric() %></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">Age</div>
+            <div class="col-lg-9 col-md-8"><%= user.getAge() %></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">Address</div>
+            <div class="col-lg-9 col-md-8"><%= user.getAddress() %></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">Phone</div>
+            <div class="col-lg-9 col-md-8"><%= user.getPhoneNum() %></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 label">Email</div>
+            <div class="col-lg-9 col-md-8"><%= user.getEmail() %></div>
+        </div>
+    </div>
 
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#emergency-contact">Emergency Contact</button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
-                </li>
-
-              </ul>
-              <div class="tab-content pt-2">
-
-                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
-                  <h5 class="card-title">Profile Details</h5>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Abu</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Age</div>
-                    <div class="col-lg-9 col-md-8">54</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">Block AA, Icity Isoho , Persiaran Multimedia, 40000 , Shah Alam</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">01131505849</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">abu@gmail.com</div>
-                  </div>
-
+    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+        <form action="UpdateProfileServlet" method="POST">
+            <input type="hidden" name="userID" value="<%= session.getAttribute("userID") %>">
+            <div class="row mb-3">
+                <label for="name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                <div class="col-md-8 col-lg-9">
+                    <input type="text" id="name" name="name" value="<%= user.getName() %>" class="form-control">
                 </div>
-
-                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-                  <!-- Profile Edit Form -->
-                  <form action=" " method="POST">
-                    <div class="edit-profile">
-                      <h5 class="card-title">Edit Profile</h5>
-                      <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                      <div class="col-md-8 col-lg-9">
-                        <img src="assets/img/default-profile.png" alt="Profile">
-                        <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="full_name" name="full_name" value="Abu" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="phone_number" name="phone_number" value="01131505849" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="email" name="email" value="abu@gmail.com" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="age" class="col-md-4 col-lg-3 col-form-label">Age</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="number" id="age" name="age" value="54" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                      <div class="col-md-8 col-lg-9">
-                        <textarea id="address" name="address" class="form-control">Block AA, I-Soho I-City, Persiaran Multimedia, 40000, Shah Alam, Selangor</textarea>
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="area" class="col-md-4 col-lg-3 col-form-label">Area</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="area" name="area" value="Block A, I-Soho I-City, Persiaran Multimedia" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="city" class="col-md-4 col-lg-3 col-form-label">City</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="city" name="city" value="Shah Alam" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="state" class="col-md-4 col-lg-3 col-form-label">State</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="state" name="state" value="Selangor" class="form-control">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label for="country" class="col-md-4 col-lg-3 col-form-label">Country</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="text" id="country" name="country" value="Malaysia" class="form-control">
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                  </div>
-                </form><!-- End Profile Edit Form -->
-
+            </div>
+            <div class="row mb-3">
+                <label for="nric" class="col-md-4 col-lg-3 col-form-label">NRIC</label>
+                <div class="col-md-8 col-lg-9">
+                    <input type="text" id="nric" name="nric" value="<%= user.getNric() %>" class="form-control">
                 </div>
+            </div>
+            <div class="row mb-3">
+                <label for="age" class="col-md-4 col-lg-3 col-form-label">Age</label>
+                <div class="col-md-8 col-lg-9">
+                    <input type="number" id="age" name="age" value="<%= user.getAge() %>" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                <div class="col-md-8 col-lg-9">
+                    <textarea id="address" name="address" class="form-control"><%= user.getAddress() %></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+                <div class="col-md-8 col-lg-9">
+                    <input type="text" id="phone" name="phone" value="<%= user.getPhoneNum() %>" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                <div class="col-md-8 col-lg-9">
+                    <input type="text" id="email" name="email" value="<%= user.getEmail() %>" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
 
-                <div class="tab-pane fade emergency-contact pt-3" id="emergency-contact">
-
-                  <!-- Emergency Contact Form -->
+    <!-- Emergency Contact Form -->
                   <form action=" " method="POST">
                     <div class="emergency-contact">
                       <h5 class="card-title">Emergency Contact</h5>
@@ -330,40 +297,34 @@
                   </div>
                 </form><!-- End Emergency Contact Form -->
 
+    <div class="tab-pane fade pt-3" id="profile-change-password">
+        <form action="ChangePasswordServlet" method="POST" onsubmit="return validatePasswordChange()">
+            <input type="hidden" name="userID" value="<%= session.getAttribute("userID") %>">
+            <input type="hidden" name="username" value="<%= session.getAttribute("username") %>">
+            <div class="row mb-3">
+                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                <div class="col-md-8 col-lg-9">
+                    <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
                 </div>
-
-                <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
-                  <form>
-
-                    <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
-                    </div>
-                  </form><!-- End Change Password Form -->
-
+            </div>
+            <div class="row mb-3">
+                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                <div class="col-md-8 col-lg-9">
+                    <input name="newPassword" type="password" class="form-control" id="newPassword" required>
                 </div>
-
+            </div>
+            <div class="row mb-3">
+                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                <div class="col-md-8 col-lg-9">
+                    <input name="renewPassword" type="password" class="form-control" id="renewPassword" required>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Change Password</button>
+            </div>
+        </form>
+    </div>
+</div>
               </div><!-- End Bordered Tabs -->
 
             </div>
