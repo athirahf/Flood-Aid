@@ -169,16 +169,16 @@
             <div class="card-body">
               <h5 class="card-title">Request Need</h5>
 
-              <form class="row g-3">
+              <form class="row g-3" action="RequestNeedServlet" method="POST">
                 <div class="col-md-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="item" placeholder="Item">
+                    <input type="text" class="form-control" name="item" id="item" placeholder="Item">
                     <label for="item">Item</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="quantity" placeholder="Quantity">
+                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity">
                         <label for="quantity">Quantity</label>
                     </div>
                 </div>

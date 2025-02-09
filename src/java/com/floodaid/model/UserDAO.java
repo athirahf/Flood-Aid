@@ -248,4 +248,22 @@ public class UserDAO {
             return false;
         }
     }
+    
+    public Integer getVolunteerShelter(int userID) {
+        String sql = "SELECT shelter_ID FROM VOLUNTEER WHERE user_ID = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("shelter_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // No shelter assigned
+    }
 }
