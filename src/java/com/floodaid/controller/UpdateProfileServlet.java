@@ -63,17 +63,17 @@ public class UpdateProfileServlet extends HttpServlet {
 
                 session.setAttribute("user", updatedUser); // ✅ Update session with latest data
 
-                response.sendRedirect("admin-profile.jsp?success=profile_updated");
+                response.sendRedirect("users-profile.jsp?success=profile_updated");
             } else {
                 conn.rollback(); 
-                response.sendRedirect("admin-profile.jsp?error=no_update");
+                response.sendRedirect("users-profile.jsp?error=no_update");
             }
 
             stmt.close();
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("admin-profile.jsp?error=update_failed");
+            response.sendRedirect("users-profile.jsp?error=update_failed");
         }
     }
 }

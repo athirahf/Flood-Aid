@@ -1,5 +1,7 @@
 package com.floodaid.controller;
 
+import com.floodaid.model.EmergencyContact;
+import com.floodaid.model.EmergencyContactDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.floodaid.model.User;
 import com.floodaid.model.UserDAO;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 
 @WebServlet("/UsersProfileServlet")
@@ -27,10 +30,14 @@ public class UsersProfileServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAO();
         User user = userDAO.getUserByID(userID); // ✅ Fetch user by ID
+        
+        EmergencyContactDAO contactDAO = new EmergencyContactDAO();
+        List<EmergencyContact> emergencyContacts = contactDAO.getEmergencyContactsByUserID(userID);
 
         if (user != null) {
             session.setAttribute("user", user); // ✅ Reload updated user object into session
             request.setAttribute("user", user);
+            request.setAttribute("emergencyContacts", emergencyContacts);
             RequestDispatcher dispatcher = request.getRequestDispatcher("users-profile.jsp");
             dispatcher.forward(request, response);
         } else {
