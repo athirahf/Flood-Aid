@@ -71,18 +71,20 @@ public class RegisterServlet extends HttpServlet {
 
     private boolean insertUserRole(int userID, String role) {
         String sql = "";
+        UserDAO userDAO = new UserDAO();
+        Integer shelterID = userDAO.findAvailableShelter(); // Get available shelter (if any)
 
-        switch (role.toLowerCase()) {
-            case "admin":
-                sql = "INSERT INTO ADMIN (user_ID, admin_status) VALUES (?, 'Active')";
-                break;
-            case "user":
-                sql = "INSERT INTO VICTIM (user_ID, shelter_ID) VALUES (?, NULL)";
-                break;
-            case "volunteer":
+        if ("admin".equalsIgnoreCase(role)) {
+            sql = "INSERT INTO ADMIN (user_ID, admin_status) VALUES (?, 'Active')";
+        } else if ("user".equalsIgnoreCase(role)) {
+            sql = "INSERT INTO VICTIM (user_ID, shelter_ID) VALUES (?, NULL)";
+        } else if ("volunteer".equalsIgnoreCase(role)) {
+            if (shelterID != null) {
+                sql = "INSERT INTO VOLUNTEER (user_ID, vol_employment, availability, is_leader, shelter_ID) VALUES (?, NULL, 'Available', 0, ?)";
+            } else {
                 sql = "INSERT INTO VOLUNTEER (user_ID, vol_employment, availability, is_leader, shelter_ID) VALUES (?, NULL, 'Available', 0, NULL)";
-                break;
-            default:
+            }
+        } else {
                 return false;
         }
 
@@ -90,6 +92,11 @@ public class RegisterServlet extends HttpServlet {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userID);
+            
+            if ("volunteer".equalsIgnoreCase(role) && shelterID != null) {
+                stmt.setInt(2, shelterID); // Assign a shelter if available
+            }
+            
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
 

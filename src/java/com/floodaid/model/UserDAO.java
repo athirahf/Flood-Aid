@@ -38,6 +38,23 @@ public class UserDAO {
         }
         return userID;
     }
+    
+    public Integer findAvailableShelter() {
+        String sql = "SELECT shelter_ID FROM SHELTER ORDER BY shelter_ID ASC FETCH FIRST 1 ROWS ONLY";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("shelter_ID"); // Return the first available shelter
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // No shelters registered yet
+    }
 
     // for login at pages-login.html
     public User validateUser(String username, String password) {
