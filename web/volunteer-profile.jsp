@@ -1,5 +1,20 @@
+<%@ page import="com.floodaid.model.Volunteer" %>
+<%@ page import="com.floodaid.model.User" %>
+<%@ page import="java.util.List, com.floodaid.model.Shelter" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
+
+<%
+    // Retrieve user object set in AdminProfileServlet
+    User user = (User) session.getAttribute("user");
+
+    if (user == null) {
+        response.sendRedirect("pages-login.html?error=session_expired");
+        return;
+    }
+%>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +74,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
+              <a class="dropdown-item d-flex align-items-center" href="VolunteerProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -153,14 +168,28 @@
         <div class="col-md-4">
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <img src="assets/img/default-profile.png" alt="Profile" class="rounded-circle">
-              <h2>Ahmad Amin</h2>
+              
+            <img src="assets/img/default-profile.png" alt="Profile" class="rounded-circle">
+              <h2><%= user.getName() %></h2>
               <h3>Volunteer</h3>
 
               <!-- Shelter Name -->
-              <button class="btn btn-primary mt-2" style="background-color: #808080; border: none; font-size: 14px; padding: 6px 12px; border-radius: 10px; color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-transform: uppercase;">
-                Seri Muda
-              </button>
+<!--              <button class="btn btn-primary mt-2" 
+                  style="background-color: <?= !empty($user['SHELTER_NAME']) ? '#007bff' : '#808080'; ?>; 
+                        border: none; 
+                        font-size: 14px; 
+                        padding: 6px 12px; 
+                        border-radius: 10px; 
+                        color: #fff; 
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                        text-transform: uppercase;">
+                  <?php 
+                  // Display shelter name based on the shelter ID retrieved in the user data
+                  echo htmlspecialchars(!empty($user['SHELTER_NAME']) ? $user['SHELTER_NAME'] : 'NOT ASSIGNED'); 
+                  ?>
+              </button>-->
+
+        
             </div>
           </div>
         </div>
@@ -181,183 +210,191 @@
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
                 </li>
               </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  
-                <h5 class="card-title">Profile Details</h5>
+              
+<!-- Change Start Here -->
+                  <div class="tab-content pt-2">
+                      <!-- Profile Overview -->
+                      <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                          <h5 class="card-title">Profile Details</h5>
+                          
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Full Name</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getName() %></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">Ahmad Amin Bin Aminuddin</div>
-                </div>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">NRIC</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getNric() %></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">NRIC</div>
-                  <div class="col-lg-9 col-md-8">990213-10-2099</div>
-                </div>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Age</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getAge() %></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">aminaminuddin99@gmail.com</div>
-                </div>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Email</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getEmail() %></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Phone</div>
-                  <div class="col-lg-9 col-md-8">019-6659132</div>
-                </div>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Phone</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getPhoneNum() %></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Occupation</div>
-                  <div class="col-lg-9 col-md-8">Student</div>
-                </div>
+<!--                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Occupation</div>
+                              <div class="col-lg-9 col-md-8"><%---= vol.getVolEmployment() ---%></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Address</div>
-                  <div class="col-lg-9 col-md-8">No 60, Taman Melawati, Seksyen 18, 4000 Shah Alam, Selangor</div>
-                </div>
+-->                       <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Address</div>
+                              <div class="col-lg-9 col-md-8"><%= user.getAddress()%></div>
+                          </div><!--
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Shelter Assigned</div>
-                  <div class="col-lg-9 col-md-8">Seri Muda</div>
-                </div>
-           
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Shelter Assigned</div>
+                              <div class="col-lg-9 col-md-8"><%---= vol.getShelterID() ---%></div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Status</div>
-                  <div class="col-lg-9 col-md-8">
-                    <span class="badge bg-success">Available</span>
-                  </div>
-                </div>
-                
-                </div>
-                
-
-                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-
-                     <!-- Profile Edit Form -->
-                <form>
-
-                  <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" value="Ahmad Amin Bin Aminuddin">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="nric" class="col-md-4 col-lg-3 col-form-label">NRIC</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="nric" type="text" class="form-control" id="nric" value="990213-10-2099">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="email" value="aminaminuddin99@gmail.com">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="phone" value="019-6659132">
-                    </div>
-                  </div>
-
-                  <!-- Updated Occupation Section -->
-                  <div class="row mb-3">
-                    <label class="col-md-4 col-lg-3 col-form-label">Occupation</label>
-                    <div class="col-md-8 col-lg-9">
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="occupation" id="occupation1" value="Working Adult">
-                        <label class="form-check-label" for="occupation1">Working Adult</label>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Status</div>
+                              <div class="col-lg-9 col-md-8">
+                                  <span class="badge <%---= vol.getAvailability().equals("Available") ? "bg-success" : "bg-danger" ---%>">
+                                    <%---= vol.getAvailability() ---%>
+                                  </span>
+                              </div>
+                          </div>-->
+                                  
                       </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="occupation" id="occupation2" value="Student" checked>
-                        <label class="form-check-label" for="occupation2">Student</label>
+
+                      <!-- Profile Edit -->
+                      <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                          <form action="VolUpdateProfileServlet" method="POST">
+                              <div class="row mb-3">
+                                  <label for="name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                                  <div class="col-md-8 col-lg-9">
+                                      <input name="name" type="text" class="form-control" id="name" value="<%= user.getName() %>">
+                                  </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                  <label for="nric" class="col-md-4 col-lg-3 col-form-label">NRIC</label>
+                                  <div class="col-md-8 col-lg-9">
+                                      <input name="nric" type="text" class="form-control" id="nric" value="<%= user.getNric() %>">
+                                  </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                <label for="age" class="col-md-4 col-lg-3 col-form-label">Age</label>
+                                <div class="col-md-8 col-lg-9">
+                                  <input type="number" id="age" name="age" value="<%= user.getAge() %>" class="form-control">
+                                </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                  <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                  <div class="col-md-8 col-lg-9">
+                                      <input name="email" type="email" class="form-control" id="email" value="<%= user.getEmail() %>">
+                                  </div>
+                              </div>
+                              
+                              <div class="row mb-3">
+                                <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+                                <div class="col-md-8 col-lg-9">
+                                  <input type="text" id="phone" name="phone" value="<%= user.getPhoneNum() %>" class="form-control">
+                                </div>
+                              </div>
+
+<!--                             <div class="row mb-3">
+                                <label for="volEmployment" class="col-md-4 col-lg-3 col-form-label">Occupation</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <select name="volEmployment" class="form-control" id="volEmployment">
+                                        <option value="Working" <%---= (vol.getVolEmployment().equals("Working")) ? "selected" : "" ---%>>Working</option>
+                                        <option value="Student" <%---= (vol.getVolEmployment().equals("Student")) ? "selected" : "" ---%>>Student</option>
+                                        <option value="N/A" <%---= (vol.getVolEmployment().equals("N/A")) ? "selected" : "" ---%>>N/A</option>
+                                    </select>
+                                </div>
+                            </div>-->
+
+                            <div class="row mb-3">
+                                <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="address" type="text" class="form-control" id="address" value="<%= user.getAddress() %>">
+                                </div>
+                            </div>
+
+<!--                            <div class="row mb-3">
+                                <label for="shelterID" class="col-md-4 col-lg-3 col-form-label">Choose Shelter</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <select name="shelterID" class="form-control" id="shelterID">
+                                        <%--- for (Shelter shelter : shelterList) { ---%>
+                                            <option value="<%---= shelter.getShelterID() ---%>" <%---= (vol.getShelterID() == shelter.getShelterID()) ? "selected" : "" ---%>>
+                                                <%---= shelter.getShelterName() ---%>
+                                            </option>
+                                        <%--- } ---%>
+                                    </select>
+                                </div>
+                            </div>-->
+
+<!--                              <div class="row mb-3">
+                                <label for="availability" class="col-md-4 col-lg-3 col-form-label">Availability Status</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <select name="availability" class="form-control" id="status">
+                                        <%---
+                                            String availability = vol.getAvailability(); // Assuming `vol` is the Volunteer object
+                                        ---%>
+                                        <option value="Available" <%---= "Available".equals(availability) ? "selected" : "" ---%>>Available</option>
+                                        <option value="Unavailable" <%---= "Unavailable".equals(availability) ? "selected" : "" ---%>>Unavailable</option>
+                                    </select>
+                                </div>
+                              </div>-->
+
+
+                              <div class="text-center">
+                                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                          </div>
+                        </form>
                       </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="occupation" id="occupation3" value="Others/Not Applicable">
-                        <label class="form-check-label" for="occupation3">Others/Not Applicable</label>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="row mb-3">
-                    <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="address" value="No 60, Taman Melawati, Seksyen 18, 4000 Shah Alam, Selangor">
-                    </div>
-                  </div>
-
-                  <!-- Updated Choose Shelter Dropdown -->
-                  <div class="row mb-3">
-                    <label for="shelter" class="col-md-4 col-lg-3 col-form-label">Choose Shelter</label>
-                    <div class="col-md-8 col-lg-9">
-                      <select name="shelter" class="form-control" id="shelter">
-                        <option value="Seri Muda">Seri Muda</option>
-                        <option value="Seksyen 7">Seksyen 7</option>
-                        <option value="Kampung Padang Jawa">Kampung Padang Jawa</option>
-                        <option value="Taman Sri Andalas">Taman Sri Andalas</option>
-                        <option value="Bukit Naga">Bukit Naga</option>
-                        <option value="Taman Alam Megah">Taman Alam Megah</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Availability" class="col-md-4 col-lg-3 col-form-label">Availability Status</label>
-                    <div class="col-md-8 col-lg-9">
-                      <select name="Availability" class="form-control" id="Availability">
-                        <option value="Available">Available</option>
-                        <option value="Unavailable">Unavailable</option>
-                      </select>
-                    </div>
-                  </div>
-
-
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                  </div>
-                </form>
-
-                </div>
-
-           
+ <!-- Change Finish Here           -->
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
-                  <form>
+                    
+                        <!-- Change Password Form -->
+                    <form action="ChangePasswordServlet" method="POST" onsubmit="return validatePasswordChange()">
+                        <input type="hidden" name="userID" value="<%= session.getAttribute("userID") %>">
+                        <input type="hidden" name="username" value="<%= session.getAttribute("username") %>">
+                        
+                        <div class="row mb-3">
+                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
+                            </div>
+                        </div>
 
-                    <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
-                    </div>
+                        <div class="row mb-3">
+                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="newPassword" type="password" class="form-control" id="newPassword" required>
+                            </div>
+                        </div>
 
-                    <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
-                      </div>
-                    </div>
+                        <div class="row mb-3">
+                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input name="renewPassword" type="password" class="form-control" id="renewPassword" required>
+                            </div>
+                        </div>
 
-                    <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
-                    </div>
-                  </form><!-- End Change Password Form -->
-
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Change Password</button>
+                        </div>
+                    </form>
                 </div>
               </div><!-- End Bordered Tabs -->
+              
+              
             </div>
           </div>
         </div>
@@ -379,6 +416,28 @@
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/js/main.js"></script>
+  
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  
+  <script>
+    function validatePasswordChange() {
+        let newPassword = document.getElementById("newPassword").value;
+        let renewPassword = document.getElementById("renewPassword").value;
+
+        if (newPassword !== renewPassword) {
+            alert("New Password and Re-entered Password do not match.");
+            return false;
+        }
+
+        if (newPassword.length < 6) {
+            alert("New password must be at least 6 characters long.");
+            return false;
+        }
+
+        return true;
+    }
+  </script>
 </body>
 
 </html>

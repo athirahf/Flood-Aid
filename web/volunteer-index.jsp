@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -133,7 +134,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.jsp">
+        <a class="nav-link collapsed" href="VolunteerProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -162,10 +163,9 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
+   <section class="section dashboard">
       <div class="row">
-
-            <!-- Sales Card -->
+            <!-- victim Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
 
@@ -176,31 +176,31 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="#">As Today</a></li>
+                    <li><a class="dropdown-item" href="#">As Today</a></li>
+                    <li><a class="dropdown-item" href="#">As Today</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Victims Rescued <span>| Today</span></h5>
+                  <h5 class="card-title">Victims Rescued <span>| As Now</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-person-heart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>25</h6>
-                      <span class="text-success small pt-1 fw-bold">5%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6><%= request.getAttribute("victimCount") %></h6>
+                      
 
                     </div>
                   </div>
                 </div>
 
               </div>
-            </div><!-- End Sales Card -->
+            </div><!-- End Victim Card -->
 
-            <!-- Revenue Card -->
+            <!-- Needs Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
 
@@ -218,24 +218,23 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Needs Distributed <span>| Today</span></h5>
+                  <h5 class="card-title">Needs Distributed <span>| As Now</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-box2-heart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>50</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6> <%= request.getAttribute("NeedCount") %></h6>
 
                     </div>
                   </div>
                 </div>
 
               </div>
-            </div><!-- End Revenue Card -->
+            </div><!-- End Need Card -->
 
-            <!-- Customers Card -->
+            <!-- Volunteers Card -->
             <div class="col-xxl-4 col-xl-12">
 
               <div class="card info-card customers-card">
@@ -254,15 +253,14 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Active Volunteers <span>| Today</span></h5>
+                  <h5 class="card-title">Active Volunteers <span>| As Now</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>244</h6>
-                      <span class="text-danger small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
+                      <h6> <%= request.getAttribute("volunteerCount") %></h6>
 
                     </div>
                   </div>
@@ -270,7 +268,7 @@
                 </div>
               </div>
 
-            </div><!-- End Customers Card -->
+            </div><!-- End Volunteers Card -->
 
       <div class="col-lg-8">
           <div class="row">
@@ -305,16 +303,17 @@
                       new ApexCharts(document.querySelector("#reportsChart"), {
                         series: [{
                           name: 'Victims Rescued',
-                          data: [31, 40, 28, 51, 42, 82, 56],
+                          data: [6, 10, 3, 2],
                         }, {
                           name: 'Needs Distributed',
-                          data: [11, 32, 45, 32, 34, 52, 41]
+                          data: [11, 25, 9, 6]
                         }, {
                           name: 'Active Volunteers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
+                          data: [20, 28, 32, 40]
                         }],
                         chart: {
                           height: 350,
+                          
                           type: 'area',
                           toolbar: {
                             show: false
@@ -342,7 +341,7 @@
                         },
                         xaxis: {
                           type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z"]
                         },
                         tooltip: {
                           x: {
@@ -493,23 +492,19 @@
                       show: false
                     },
                     data: [{
-                        value: 856,  // Example: 2000 flood victims
+                        value:  <?php 
+                          echo $victim[0]['COUNT(*)'];
+                        ?>,  // Example: 2000 flood victims
                         name: 'Flood Victims'
                       },
                       {
-                        value: 244,  // Example: 500 volunteers
+                        value:  <?php 
+                          echo $volunteer[0]['COUNT(*)'];
+                        ?>,  // Example: 500 volunteers
                         name: 'Volunteers'
                       },
                       {
-                        value: 110,  // Example: 50 shelters set up
-                        name: 'Shelters'
-                      },
-                      {
-                        value: 360,  // Example: 1500 victims rescued
-                        name: 'Victims Rescued'
-                      },
-                      {
-                        value: 45,  // Example: 30 rescue operations ongoing
+                        value: 12,  // Example: 30 rescue operations ongoing
                         name: 'Rescue Operations'
                       },
                    
@@ -520,7 +515,6 @@
             </script>
   </div>
 </div>
-
           </div><!-- End Website Traffic -->
         </div><!-- End Right side columns -->
 
@@ -528,20 +522,6 @@
     </section>
 
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      <!-- &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved -->
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
-    </div>
-  </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

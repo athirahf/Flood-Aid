@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
+<%@ page import="com.floodaid.model.Volunteer" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +74,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
+              <a class="dropdown-item d-flex align-items-center" href="VolunteerProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -133,7 +134,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.jsp">
+        <a class="nav-link collapsed" href="VolunteerProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
