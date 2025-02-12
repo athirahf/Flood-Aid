@@ -11,8 +11,8 @@ public class VolunteerDAO {
 
     // Method to update Volunteer details
     public boolean updateVolunteerDetails(Volunteer volunteer) {
-        String updateUserSQL = "UPDATE USER SET name = ?, email = ?, username = ?, password = ?, nric = ?, age = ?, address = ?, phoneNum = ? WHERE user_ID = ?";
-        String updateVolunteerSQL = "UPDATE VOLUNTEER SET volEmployment = ?, availability = ?, isLeader = ?, shelter_ID = ? WHERE user_ID = ?";
+        String updateUserSQL = "UPDATE USERS SET name = ?, email = ?, username = ?, password = ?, nric = ?, age = ?, address = ?, phoneNum = ? WHERE user_ID = ?";
+        String updateVolunteerSQL = "UPDATE VOLUNTEER SET vol_employment = ?, availability = ?, is_leader = ?, shelter_ID = ? WHERE user_ID = ?";
         
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
             conn.setAutoCommit(false); // Start transaction
@@ -35,7 +35,7 @@ public class VolunteerDAO {
                 // Update VOLUNTEER table
                 volunteerStmt.setString(1, volunteer.getVolEmployment());
                 volunteerStmt.setString(2, volunteer.getAvailability());
-                volunteerStmt.setBoolean(3, volunteer.isLeader());
+                volunteerStmt.setInt(3, volunteer.isLeader());
                 volunteerStmt.setInt(4, volunteer.getShelterID());
                 volunteerStmt.setInt(5, volunteer.getUserID());
                 volunteerStmt.executeUpdate();
@@ -56,7 +56,7 @@ public class VolunteerDAO {
     // ✅ Retrieve volunteer details by userID
     public Volunteer getVolunteerByID(int userID) {
         Volunteer volunteer = null;
-        String sql = "SELECT * FROM volunteer v JOIN user u ON v.userID = u.userID WHERE v.userID = ?";
+        String sql = "SELECT * FROM volunteer v JOIN users u ON v.user_ID = u.user_ID WHERE v.user_ID = ?";
 
          try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -79,7 +79,7 @@ public class VolunteerDAO {
                     rs.getString("registrationTime"),
                     rs.getString("volEmployment"),
                     rs.getString("availability"),
-                    rs.getBoolean("isLeader"),
+                    rs.getInt("isLeader"),
                     rs.getInt("shelterID")
                 );
             }
@@ -120,11 +120,11 @@ public class VolunteerDAO {
             return volunteers; // Return empty list if no shelter is found
         }
 
-        String sql = "SELECT u.user_ID, u.name, u.email, u.role, u.username, u.password, u.nric, u.age, u.address, u.phoneNum, " +
-                     "v.volEmployment, v.availability, v.isLeader, v.shelter_ID " +
-                     "FROM USER u " +
-                     "JOIN VOLUNTEER v ON u.user_ID = v.user_ID " +
-                     "WHERE v.shelter_ID = ?"; // No exclusion of the current user
+        String sql = "SELECT u.USER_ID, u.NAME, u.EMAIL u.USER_ROLE, u.USERNAME, u.PASSWORD, String NRIC,  u.AGE, u.ADDRESS u.PHONENUM, " +
+                     "u.REGISTRATION_TIME v.VOL_EMPLOYMENT, v.AVAILABILITY, v.IS_LEADER, v.SHELTER_ID " +
+                     "FROM USERS u " +
+                     "JOIN VOLUNTEER v ON u.USER_ID = v.USER_ID " +
+                     "WHERE v.SHELTER_ID = ?"; // No exclusion of the current user
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -134,24 +134,26 @@ public class VolunteerDAO {
 
             while (rs.next()) {
                 Volunteer volunteer = new Volunteer(
-                    rs.getInt("user_ID"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("role"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("nric"),
-                    rs.getInt("age"),
-                    rs.getString("address"),
-                    rs.getString("phoneNum"),
-                    null, // registrationTime (not retrieved)
-                    rs.getString("volEmployment"),
-                    rs.getString("availability"),
-                    rs.getBoolean("isLeader"),
-                    rs.getInt("shelter_ID")
+                    rs.getInt("USER_ID"),
+                    rs.getString("NAME"),
+                    rs.getString("EMAIL"),
+                    rs.getString("USER_ROLE"),
+                    rs.getString("USERNAME"),
+                    rs.getString("PASSWORD"),
+                    rs.getString("NRIC"),
+                    rs.getInt("AGE"),
+                    rs.getString("ADDRESS"),
+                    rs.getString("PHONENUM"),
+                    rs.getString("REGISTRATION_TIME"),
+                    rs.getString("VOL_EMPLOYMENT"),
+                    rs.getString("AVAILABILITY"),
+                    rs.getInt("IS_LEADER"),
+                    rs.getInt("SHELTER_ID")
                 );
                 volunteers.add(volunteer);
             }
+            // Log the number of volunteers fetched
+            System.out.println("Number of Volunteers Fetched: " + volunteers.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }

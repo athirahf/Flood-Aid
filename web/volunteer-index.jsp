@@ -112,7 +112,7 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+        <a class="nav-link collapsed" href="VolViewTeamServlet">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>

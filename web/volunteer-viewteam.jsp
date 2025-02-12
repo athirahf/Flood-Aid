@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
 <%@ page import="com.floodaid.model.Volunteer" %>
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -233,80 +234,45 @@
                             <th scope="col">Status</th>
                             <th scope="col">Role</th>
                           </tr>
-                        </thead>
+                        </thead>                
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Abdul Rahim</td>
-                            <td>47</td>
-                            <td>013-4391040</td>
-                            <td>rahimmmmm@gmail.com</td>
-                            <td>Working</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-primary">Team Leader</span></td>
-                          </tr>
+                            <% 
+                                List<Volunteer> volunteers = (List<Volunteer>) request.getAttribute("volunteers");
+                                if (volunteers != null) {
+                                    int rowNumber = 1; // ✅ Start row number from 1
+                                    for (Volunteer volunteer : volunteers) {
+                                        String availabilityBadge = "";
 
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Brandon Jacob</td>
-                            <td>28</td>
-                            <td>017-2842224</td>
-                            <td>brandonj@gmail.com</td>
-                            <td>Student</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Bridie Kessler</td>
-                            <td>35</td>
-                            <td>013-3825692</td>
-                            <td>bridiekess@gmail.com</td>
-                            <td>Working</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>Siti Hajar</td>
-                            <td>20</td>
-                            <td>014-2859319</td>
-                            <td>hajar04@gmail.com</td>
-                            <td>Student</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>Adrian</td>
-                            <td>34</td>
-                            <td>018-28426302</td>
-                            <td>adrian123@gmail.com</td>
-                            <td>Working</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                          </tr>
-                        
-                          <tr>
-                            <th scope="row">6</th>
-                            <td>Nur Aimi</td>
-                            <td>25</td>
-                            <td>016-27419321</td>
-                            <td>aimi150499@gmail.com</td>
-                            <td>Student</td>
-                            <td><span class="badge bg-secondary">Unvailable</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">7</th>
-                            <td>Christina Lauren</td>
-                            <td>35</td>
-                            <td>018-29472130</td>
-                            <td>christinel@gmail.com</td>
-                            <td>Working</td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td><span class="badge bg-light text-dark">Member</span></td>
-                      
+                                        if ("Available".equalsIgnoreCase(volunteer.getAvailability())) {
+                                            availabilityBadge = "<span class='badge bg-success'>Available</span>";
+                                        } else {
+                                            availabilityBadge = "<span class='badge bg-secondary'>Unavailable</span>";
+                                        }
+                                        
+                                        String leaderBadge = "";
+
+                                        if (volunteer.isLeader() == 1) {
+                                            availabilityBadge = "<span class='badge bg-primary'>Leader</span>";
+                                        } else {
+                                            availabilityBadge = "<span class='badge bg-light text-dark'>Member</span>";
+                                        }
+                            %>
+                                <tr>
+                                    <th scope="row"><%= rowNumber++ %></th>
+                                    <td><%= volunteer.getName() %></td>
+                                    <td><%= volunteer.getAge() %></td>
+                                    <td><%= volunteer.getPhoneNum() %></td>
+                                    <td><%= volunteer.getEmail() %></td>
+                                    <td><%= volunteer.getVolEmployment() %></td>
+                                    <td><%= availabilityBadge %></td>
+                                    <td><%= leaderBadge %></td>
+                                </tr>
+                            <% 
+                                    }
+                                } else { 
+                            %>
+                                <tr><td colspan="6">No volunteers found.</td></tr>
+                            <% } %>
                         </tbody>
                       </table>
                       <!-- End Table with stripped rows -->
