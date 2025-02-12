@@ -120,11 +120,12 @@ public class VolunteerDAO {
             return volunteers; // Return empty list if no shelter is found
         }
 
-        String sql = "SELECT u.USER_ID, u.NAME, u.EMAIL u.USER_ROLE, u.USERNAME, u.PASSWORD, String NRIC,  u.AGE, u.ADDRESS u.PHONENUM, " +
-                     "u.REGISTRATION_TIME v.VOL_EMPLOYMENT, v.AVAILABILITY, v.IS_LEADER, v.SHELTER_ID " +
-                     "FROM USERS u " +
-                     "JOIN VOLUNTEER v ON u.USER_ID = v.USER_ID " +
-                     "WHERE v.SHELTER_ID = ?"; // No exclusion of the current user
+        String sql = "SELECT u.USER_ID, u.NAME, u.EMAIL, u.USER_ROLE, u.USERNAME, u.PASSWORD, " +
+                 "u.NRIC, u.AGE, u.ADDRESS, u.PHONENUM, u.REGISTRATION_TIME, " +
+                 "v.VOL_EMPLOYMENT, v.AVAILABILITY, v.IS_LEADER, v.SHELTER_ID " +
+                 "FROM USERS u " +
+                 "JOIN VOLUNTEER v ON u.USER_ID = v.USER_ID " +
+                 "WHERE v.SHELTER_ID = ?"; //No exclusion of the current user
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

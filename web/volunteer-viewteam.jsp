@@ -252,9 +252,9 @@
                                         String leaderBadge = "";
 
                                         if (volunteer.isLeader() == 1) {
-                                            availabilityBadge = "<span class='badge bg-primary'>Leader</span>";
+                                            leaderBadge = "<span class='badge bg-primary'>Leader</span>";
                                         } else {
-                                            availabilityBadge = "<span class='badge bg-light text-dark'>Member</span>";
+                                            leaderBadge = "<span class='badge bg-light text-dark'>Member</span>";
                                         }
                             %>
                                 <tr>
@@ -271,7 +271,7 @@
                                     }
                                 } else { 
                             %>
-                                <tr><td colspan="6">No volunteers found.</td></tr>
+                                <tr><td colspan="8">No volunteers found.</td></tr>
                             <% } %>
                         </tbody>
                       </table>
