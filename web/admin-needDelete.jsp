@@ -1,7 +1,20 @@
+<%@page import="com.floodaid.model.Need"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
 <jsp:include page="include/admin-extension.jsp" />
+<%@ page import="java.util.List" %>
 
+<%@ page import="com.floodaid.model.Need" %>
+<%@ page import="com.floodaid.model.NeedDAO" %>
+<%@ page import="com.floodaid.model.Shelter" %>
+<%@ page import="com.floodaid.model.ShelterDAO" %>
+
+<%
+    Integer userID = (Integer) session.getAttribute("userID");
+    String needID = request.getParameter("NeedID");
+    NeedDAO needDAO = new NeedDAO();
+    Need need = needDAO.getNeedByID(Integer.parseInt(needID));
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,13 +22,13 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Register Shelter</title>
+  <title>Request Need</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/FloodAidLogo.png" rel="icon">
-  <link href="assets/img/FloodAidLogo.png" rel="apple-touch-icon">
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -46,55 +59,69 @@
 
   <main id="main" class="main">
 
+    <!-- Page Title -->
     <div class="pagetitle">
-      <h1>Register Shelter</h1>
+      <h1>Delete Need</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="admin-index.jsp">Home</a></li>
-          <li class="breadcrumb-item">Manage Shelter</li>
-          <li class="breadcrumb-item active">Register Shelter</li>
+          <li class="breadcrumb-item"><a href="admin-editneed.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="AdminNeedServlet">Manage Need</a></li>
+          <li class="breadcrumb-item active">Delete Request Need</li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div>
+    <!-- End Page Title -->
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-10 offset-lg-1">
+        <div class="col-lg-12">
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Register Shelter Details</h5>
+              <h5 class="card-title">Delete Request Need</h5>
+              <form class="row g-3" method="POST" action="AdminNeedDeleteServlet?NeedID=<%= request.getParameter("NeedID")%>">
+                <div class="col-md-12">
+                  <div class="form-floating">
+                      <input type="text" class="form-control" id="item" name="shelterID" value="<%= need.getShelterID() %>" readonly>
+                    <label for="item">Shelter ID</label>
+                  </div>
+                </div>
+                                        
+                <div class="col-md-12">
+                  <div class="form-floating">
+                      <input type="text" class="form-control" id="item" name="NEED_ITEM" value="<%= need.getNeedItem() %>" readonly>
+                    <label for="item">Item</label>
+                  </div>
+                </div>
 
-                  <!-- Profile Edit Form -->
-                  <form action="RegisterShelterServlet" method="post">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="name" class="col-md-4 col-lg-3 col-form-label">Shelter Name</label>
-                            <input name="name" type="text" class="form-control" id="name">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="capacity" class="col-md-4 col-lg-3 col-form-label">Total Capacity</label>
-                            <input name="capacity" type="number" class="form-control" id="capacity">
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
-                            <textarea id="address" name="address" class="form-control"></textarea>
-                        </div>
-                    </div>
+                <div class="col-md-12">
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="quantity" name="NEED_QUANTITY" value="<%= need.getNeedQuantity() %>" readonly>
+                    <label for="quantity">Quantity</label>
+                  </div>
+                </div>
 
-                    <div class="text-center">
-                      <a href="AdminSheltersServlet" class="btn btn-secondary">Cancel</a>
-                      <button type="submit" class="btn btn-primary">Register</button>
-                    </div>
-                  </form><!-- End Profile Edit Form -->
+
+                <div class="col-md-12">
+                  <div class="form-floating">
+                      <input type="text" class="form-control" id="user" name="USER_ID" value="<%= need.getUserID() %>" readonly>
+                    <label for="user">Enter your user ID</label>
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                </div>
+              </form>
+
+
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <a type="reset" class="btn btn-warning" href="AdminNeedServlet">Back to Need List</a>
 
   </main><!-- End #main -->
 
@@ -110,7 +137,8 @@
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
       <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
     </div>
-  </footer><!-- End Footer -->
+  </footer>
+  <!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

@@ -14,12 +14,14 @@ public class Signal {
     // Constructors
     public Signal() {}
 
-    public Signal(String signalPlace, String signalArea, String signalPostcode, int userID) {
-        this.signalTime = new Timestamp(System.currentTimeMillis());
+    public Signal(int signalID, Timestamp signalTime, String signalPlace, String signalArea, String signalPostcode, String signalStatus, String remark, int userID) {
+        this.signalID = signalID;
+        this.signalTime = signalTime;
         this.signalPlace = signalPlace;
         this.signalArea = signalArea;
         this.signalPostcode = signalPostcode;
-        this.signalStatus = "Pending";  // Default status
+        this.signalStatus = signalStatus; 
+        this.remark = remark;
         this.userID = userID;
     }
 
@@ -42,6 +44,9 @@ public class Signal {
     public String getSignalStatus() { return signalStatus; }
     public void setSignalStatus(String signalStatus) { this.signalStatus = signalStatus; }
 
+    public String getSignalRemark() { return remark; }
+    public void setSignalRemark(String remark) { this.remark = remark; }
+    
     public int getUserID() { return userID; }
     public void setUserID(int userID) { this.userID = userID; }
 }
