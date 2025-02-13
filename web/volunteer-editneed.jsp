@@ -73,7 +73,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
+              <a class="dropdown-item d-flex align-items-center" href="VolunteerProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -103,7 +103,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-index.jsp">
+        <a class="nav-link collapsed" href="VolDashboardServlet">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -111,7 +111,7 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+        <a class="nav-link collapsed" href="VolViewTeamServlet">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>
@@ -133,7 +133,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.jsp">
+        <a class="nav-link collapsed" href="VolunteerProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -155,7 +155,7 @@
       <h1>Edit Need</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="volunteer-index.jsp">Home</a></li>
+          <li class="breadcrumb-item"><a href="VolDashboardServlet">Home</a></li>
           <li class="breadcrumb-item">Manage Need</li>
           <li class="breadcrumb-item active">Edit Need</li>
         </ol>

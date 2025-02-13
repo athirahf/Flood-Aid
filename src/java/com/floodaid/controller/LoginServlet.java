@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("users-index.jsp");
                     break;
                 case "volunteer":
-                    response.sendRedirect("volunteer-index.jsp");
+                    response.sendRedirect("VolDashboardServlet");
                     break;
                 default:
                     response.sendRedirect("homepage.html");

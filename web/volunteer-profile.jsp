@@ -6,7 +6,7 @@
 <jsp:include page="checkSession.jsp" />
 
 <%
-    // Retrieve user object set in AdminProfileServlet
+    // Retrieve user object set in VolProfileServlet
     User user = (User) session.getAttribute("user");
 
     if (user == null) {
@@ -104,7 +104,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-index.jsp">
+        <a class="nav-link collapsed" href="VolDashboardServlet">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -112,7 +112,7 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+        <a class="nav-link collapsed" href="VolViewTeamServlet">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>
@@ -134,7 +134,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.jsp">
+        <a class="nav-link collapsed" href="VolunteerProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -156,7 +156,7 @@
       <h1>Profile</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="volunteer-index.jsp">Home</a></li>
+          <li class="breadcrumb-item"><a href="VolDashboardServlet">Home</a></li>
           <li class="breadcrumb-item active">Profile</li>
         </ol>
       </nav>

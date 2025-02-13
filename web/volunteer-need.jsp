@@ -72,7 +72,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="volunteer-profile.jsp">
+              <a class="dropdown-item d-flex align-items-center" href="VolunteerProfileServlet">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -102,7 +102,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-index.jsp">
+        <a class="nav-link collapsed" href="VolDashboardServlet">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -110,7 +110,7 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+        <a class="nav-link collapsed" href="VolViewTeamServlet">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>
@@ -132,7 +132,7 @@
 
       <!-- Profile Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-profile.jsp">
+        <a class="nav-link collapsed" href="VolunteerProfileServlet">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -154,13 +154,13 @@
       <h1>All Need</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="shelter-index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="VolDashboardServlet">Home</a></li>
           <li class="breadcrumb-item active">Manage Need</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-    <section class="section">
+    
+     <section class="section">
       <div class="row">
         <div class="col-lg-12">
 
@@ -169,6 +169,74 @@
               <h5 class="card-title">List of All Need</h5>
 
               <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% 
+                        List<Shelter> shelters = (List<Shelter>) request.getAttribute("shelters");
+                        if (shelters != null) {
+                            int rowNumber = 1; // ✅ Start row number from 1
+                            for (Shelter shelter : shelters) {
+                    %>
+                        <tr>
+                            <th scope="row"><%= rowNumber++ %></th> <!-- ✅ Uses row number instead of Shelter ID -->
+                            <td><%= shelter.getShelterName() %></td>
+                            <td><%= shelter.getShelterCapacity() %></td>
+                            <td>0</td> <!-- Assuming current occupants will be added later -->
+                            <td><%= shelter.getShelterAddress() %></td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                    <div class="filter">
+                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-info btn-md bi-pencil-square"></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li><a class="dropdown-item" href="admin-editshelter.jsp?shelterID=<%= shelter.getShelterID() %>">Edit</a></li>
+                                            <li><a class="dropdown-item" href="DeleteShelterServlet?shelterID=<%= shelter.getShelterID() %>" onclick="return confirmDelete();">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    <% 
+                            }
+                        } else { 
+                    %>
+                        <tr><td colspan="6">No shelters found.</td></tr>
+                    <% } %>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-lg-12">
+          <div class="text-center">
+              <a href="admin-regshelter.jsp" class="btn btn-primary">Register New Shelter</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">List of All Need</h5>
+
+              
+               Table with stripped rows 
               <table class="table datatable">
                 <thead>
                   <tr>
@@ -292,30 +360,16 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- End Table with stripped rows -->
+               End Table with stripped rows 
 
             </div>
           </div>
 
         </div>
       </div>
-    </section>
+    </section>-->
 
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      <!-- &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved -->
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
-    </div>
-  </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

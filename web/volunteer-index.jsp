@@ -104,7 +104,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-index.jsp">
+        <a class="nav-link collapsed" href="VolDashboardServlet">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -225,7 +225,7 @@
                       <i class="bi bi-box2-heart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6> <%= request.getAttribute("NeedCount") %></h6>
+                      <h6> <%= request.getAttribute("needCount") %></h6>
 
                     </div>
                   </div>
@@ -492,15 +492,11 @@
                       show: false
                     },
                     data: [{
-                        value:  <?php 
-                          echo $victim[0]['COUNT(*)'];
-                        ?>,  // Example: 2000 flood victims
+                        value:  <%= request.getAttribute("victimCount") %>,  // Example: 2000 flood victims
                         name: 'Flood Victims'
                       },
                       {
-                        value:  <?php 
-                          echo $volunteer[0]['COUNT(*)'];
-                        ?>,  // Example: 500 volunteers
+                        value:  <%= request.getAttribute("volunteerCount") %>,  // Example: 500 volunteers
                         name: 'Volunteers'
                       },
                       {

@@ -164,7 +164,7 @@ public class VolunteerDAO {
 
     // Method to get the shelter name using shelter ID
     public String getShelterName(int shelterID) {
-        String sql = "SELECT shelterName FROM SHELTER WHERE shelter_ID = ?";
+        String sql = "SELECT SHELTER_NAME FROM SHELTER WHERE shelter_ID = ?";
         String shelterName = null;
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -174,7 +174,7 @@ public class VolunteerDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                shelterName = rs.getString("shelterName");
+                shelterName = rs.getString("SHELTER_NAME");
             }
         } catch (SQLException e) {
             e.printStackTrace();

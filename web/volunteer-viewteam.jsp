@@ -3,6 +3,11 @@
 <%@ page import="com.floodaid.model.Volunteer" %>
 <%@ page import="java.util.List" %>
 
+<%
+        //Retrieve from VolViewTeamServlet
+        String shelterName = (String) request.getAttribute("shelterName");
+       
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,7 +110,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-index.jsp">
+        <a class="nav-link collapsed" href="VolDashboardServlet">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -113,7 +118,7 @@
 
       <!-- View Team Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-viewteam.jsp">
+        <a class="nav-link collapsed" href="VolViewTeamServlet">
           <i class="bi bi-people-fill"></i>
           <span>View Team</span>
         </a>
@@ -158,7 +163,7 @@
       <h1>View Team</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="volunteer-index.jsp">Home</a></li>
+          <li class="breadcrumb-item"><a href="VolDashboardServlet">Home</a></li>
           <li class="breadcrumb-item active">View Team</li>
         </ol>
       </nav>
@@ -170,9 +175,11 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Welcome to Seri Muda Team Page!</h5>
+              <h5 class="card-title">Welcome to <%= shelterName %> Team Page!</h5>
+              
+              
+                
 
-            
                 <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
@@ -183,12 +190,12 @@
                   <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <strong>Who Are We?</strong><br>
-                      Seri Muda Volunteers Team is a dedicated team focused on supporting and assisting the community of Seri Muda, especially during times of disaster like floods. With a strong commitment to community cooperation, we provide immediate relief, coordinate shelters, and mobilize resources to help our fellow Malaysians in this vulnerable area. We stand by the people of Seri Muda, ensuring their safety and recovery when they need it the most.
+                      <%= shelterName %> Volunteers Team is a dedicated team focused on supporting and assisting the community of <%= shelterName %>, especially during times of disaster like floods. With a strong commitment to community cooperation, we provide immediate relief, coordinate shelters, and mobilize resources to help our fellow Malaysians in this vulnerable area. We stand by the people of <%= shelterName %>, ensuring their safety and recovery when they need it the most.
                       <p></p>
                       <strong>Stay Connected!</strong><br>
-                      Our team communicates and stays updated through our Telegram Group. It's a great platform for sharing important updates, coordinating efforts, and supporting each other. If you haven't joined us yet, make sure to click the link below to become a part of our communication network and help us coordinate relief efforts for the community of Seri Muda.
+                      Our team communicates and stays updated through our Telegram Group. It's a great platform for sharing important updates, coordinating efforts, and supporting each other. If you haven't joined us yet, make sure to click the link below to become a part of our communication network and help us coordinate relief efforts for the community of <%= shelterName %>.
                       <br><br>
-                      <a href="https://t.me/SeriMudaTeam" button type="button" class="btn btn-outline-dark" target="_blank">Our Telegram Channel</a>
+                      <a href="https://t.me/<%= shelterName %>Team" button type="button" class="btn btn-outline-dark" target="_blank">Our Telegram Channel</a>
                     
                     </div>
                   </div>
@@ -202,10 +209,10 @@
                   <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <strong>Mission</strong><br>
-                      Our mission is to bring timely, effective, and compassionate assistance to the people of Seri Muda, helping them recover from the devastating impacts of floods. We aim to strengthen the bonds within the community by uniting volunteers and residents to overcome challenges together, keeping the spirit of semangat kekitaan (togetherness) alive in every action we take.
+                      Our mission is to bring timely, effective, and compassionate assistance to the people of <%= shelterName %>, helping them recover from the devastating impacts of floods. We aim to strengthen the bonds within the community by uniting volunteers and residents to overcome challenges together, keeping the spirit of semangat kekitaan (togetherness) alive in every action we take.
                       <br><p></p>
                       <strong>Vision</strong><br> 
-                      Our vision is to establish a resilient and well-prepared community in Seri Muda, where no one is left behind during times of crisis. We aspire to create a future where the people of Seri Muda are equipped to face any disaster with confidence, supported by a strong network of volunteers and resources.
+                      Our vision is to establish a resilient and well-prepared community in <%= shelterName %>, where no one is left behind during times of crisis. We aspire to create a future where the people of <%= shelterName %> are equipped to face any disaster with confidence, supported by a strong network of volunteers and resources.
                     </div>
                   </div>
                 </div>
@@ -218,7 +225,7 @@
                   </h2>
                   <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <strong>List of Active Members of Seri Muda Team</strong>
+                      <strong>List of Active Members of <%= shelterName %> Team</strong>
                       <p></p>
 
                       <!-- Table with stripped rows -->

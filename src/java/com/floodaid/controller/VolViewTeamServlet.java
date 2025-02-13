@@ -27,6 +27,8 @@ public class VolViewTeamServlet extends HttpServlet {
 
     VolunteerDAO volunteerDAO = new VolunteerDAO();
     List<Volunteer> volunteerList = volunteerDAO.getVolunteersByCurrentUser(userID);
+    int userShelterID = volunteerDAO.getShelterIDByUserID(userID);
+    String userShelterName = volunteerDAO.getShelterName(userShelterID);
 
     // Log the volunteer list for debugging
     System.out.println("Volunteers List: " + volunteerList);
@@ -41,6 +43,7 @@ public class VolViewTeamServlet extends HttpServlet {
     }
 
     request.setAttribute("volunteers", volunteerList);
+    request.setAttribute("shelterName", userShelterName);
     RequestDispatcher dispatcher = request.getRequestDispatcher("volunteer-viewteam.jsp");
     dispatcher.forward(request, response);
 }}
