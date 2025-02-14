@@ -1,5 +1,7 @@
 package com.floodaid.controller;
 
+import com.floodaid.model.Shelter;
+import com.floodaid.model.ShelterDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +31,12 @@ public class AdminSignalApproveServlet extends HttpServlet {
         }
         
         String status = "Approved";
-        String remark = "Signal found and the victim will be sent to shelter with ID,"+shelterID+".";
+        
+        ShelterDAO shelterDAO = new ShelterDAO();
+        Shelter shelter = shelterDAO.getShelterByID(shelterID);
+        String shelterName = (shelter != null) ? shelter.getShelterName() : "Unknown Shelter";
+        
+        String remark = "Signal found and the victim will be sent to " +shelterName+".";
         String otherRemark = "No Other Remark";
         
         int userID = Integer.parseInt(request.getParameter("userID"));
@@ -38,7 +45,12 @@ public class AdminSignalApproveServlet extends HttpServlet {
         boolean success = signalDAO.updateSignal(status, remark, otherRemark, shelterID, signalID, userID);
 
         if (success) {
-            response.sendRedirect("AdminSignalServlet");
+            boolean updated = shelterDAO.incrementOccupantCount(shelterID);
+            if (updated) {
+                response.sendRedirect("AdminSignalServlet?success=approved");
+            } else {
+                response.sendRedirect("AdminSignalServlet?error=occupant_update_failed");
+            }
         } else {
             response.sendRedirect("admin-signalApprove.jsp?SignalID="+signalID+"&ShelterID=0&error=update_failed");
         }

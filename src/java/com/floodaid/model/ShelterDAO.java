@@ -112,4 +112,20 @@ public class ShelterDAO {
             return false;
         }
     }
+    
+    public boolean incrementOccupantCount(int shelterID) {
+        String sql = "UPDATE SHELTER SET CURRENT_OCCUPANT = CURRENT_OCCUPANT + 1 WHERE SHELTER_ID = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, shelterID);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

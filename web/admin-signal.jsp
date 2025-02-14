@@ -106,7 +106,7 @@
                                                             } else if ("Approved".equalsIgnoreCase(status)) {
                                                                 badgeClass = "bg-success text-white";
                                                             } else if ("Rejected".equalsIgnoreCase(status)) {
-                                                                badgeClass = "bg-secondary text-white";
+                                                                badgeClass = "bg-danger text-white";
                                                             }
                                                         %>
 
