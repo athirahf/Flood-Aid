@@ -1,17 +1,28 @@
 <%@ page import="com.floodaid.model.Volunteer" %>
-<%@ page import="com.floodaid.model.User" %>
 <%@ page import="java.util.List, com.floodaid.model.Shelter" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
+<jsp:include page="include/volunteer-extension.jsp" />
 
 <%
     // Retrieve user object set in VolProfileServlet
-    User user = (User) session.getAttribute("user");
+    Volunteer volunteer = (Volunteer) session.getAttribute("volunteer");
+    List<Shelter> shelterList = (List<Shelter>) session.getAttribute("shelterList");
 
-    if (user == null) {
+    if (volunteer == null) {
         response.sendRedirect("pages-login.html?error=session_expired");
         return;
+    }
+    
+    String shelterName = "NOT ASSIGNED";
+    if (volunteer.getShelterID() != 0) {
+        for (Shelter shelter : shelterList) {
+            if (shelter.getShelterID() == volunteer.getShelterID()) {
+                shelterName = shelter.getShelterName();
+                break;
+            }
+        }
     }
 %>
 
@@ -43,113 +54,6 @@
 </head>
 
 <body>
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="homepage.html" class="logo d-flex align-items-center">
-        <img src="assets/img/FloodAidLogo.png" alt="">
-        <span class="d-none d-lg-block">Banjir Rescue </span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-        <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/default-profile.png" alt="Profile" class="rounded-circle">
-            <!-- <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span> -->
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6><%= session.getAttribute("username") %></h6>
-              <span>Volunteer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="VolunteerProfileServlet">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="LogoutServlet">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Log Out</span>
-              </a>
-            </li>
-
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="VolDashboardServlet">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <!-- View Team Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="VolViewTeamServlet">
-          <i class="bi bi-people-fill"></i>
-          <span>View Team</span>
-        </a>
-      </li><!-- End View Team Nav -->
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-reqneed.jsp">
-          <i class="bi bi-bag-plus"></i>
-          <span>Request Need</span>
-        </a>
-      </li>
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="volunteer-need.jsp">
-          <i class="bi bi-bag-plus-fill"></i>
-          <span>Manage Need</span>
-        </a>
-      </li>
-
-      <!-- Profile Page Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="VolunteerProfileServlet">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="LogoutServlet">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>Log Out</span>
-        </a>
-      </li><!-- End Logout Page Nav -->
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
     <div class="pagetitle">
@@ -170,12 +74,11 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
               
             <img src="assets/img/default-profile.png" alt="Profile" class="rounded-circle">
-              <h2><%= user.getName() %></h2>
+              <h2><%= volunteer.getName() %></h2>
               <h3>Volunteer</h3>
 
-              <!-- Shelter Name -->
-<!--              <button class="btn btn-primary mt-2" 
-                  style="background-color: <?= !empty($user['SHELTER_NAME']) ? '#007bff' : '#808080'; ?>; 
+              <button class="btn btn-primary mt-2" 
+                  style="background-color: <%= volunteer.getShelterName() != null ? "#007bff" : "#808080" %>;  
                         border: none; 
                         font-size: 14px; 
                         padding: 6px 12px; 
@@ -183,11 +86,8 @@
                         color: #fff; 
                         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
                         text-transform: uppercase;">
-                  <?php 
-                  // Display shelter name based on the shelter ID retrieved in the user data
-                  echo htmlspecialchars(!empty($user['SHELTER_NAME']) ? $user['SHELTER_NAME'] : 'NOT ASSIGNED'); 
-                  ?>
-              </button>-->
+                  <%= volunteer.getShelterName() != null ? volunteer.getShelterName() : "NOT ASSIGNED" %>
+              </button>
 
         
             </div>
@@ -219,136 +119,135 @@
                           
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Full Name</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getName() %></div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getName() %></div>
                           </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">NRIC</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getNric() %></div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getNric() %></div>
                           </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Age</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getAge() %></div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getAge() %></div>
                           </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Email</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getEmail() %></div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getEmail() %></div>
                           </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Phone</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getPhoneNum() %></div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getPhoneNum() %></div>
                           </div>
 
-<!--                          <div class="row">
-                              <div class="col-lg-3 col-md-4 label">Occupation</div>
-                              <div class="col-lg-9 col-md-8"><%---= vol.getVolEmployment() ---%></div>
+                          <div class="row">
+                              <div class="col-lg-3 col-md-4 label">Employment</div>
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getVolEmployment() %></div>
                           </div>
 
--->                       <div class="row">
+                       <div class="row">
                               <div class="col-lg-3 col-md-4 label">Address</div>
-                              <div class="col-lg-9 col-md-8"><%= user.getAddress()%></div>
-                          </div><!--
+                              <div class="col-lg-9 col-md-8"><%= volunteer.getAddress()%></div>
+                          </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Shelter Assigned</div>
-                              <div class="col-lg-9 col-md-8"><%---= vol.getShelterID() ---%></div>
+                              <div class="col-lg-9 col-md-8"><%= shelterName %></div>
                           </div>
 
                           <div class="row">
                               <div class="col-lg-3 col-md-4 label">Status</div>
                               <div class="col-lg-9 col-md-8">
-                                  <span class="badge <%---= vol.getAvailability().equals("Available") ? "bg-success" : "bg-danger" ---%>">
-                                    <%---= vol.getAvailability() ---%>
+                                  <span class="badge <%= volunteer.getAvailability().equals("Available") ? "bg-success" : "bg-danger" %>">
+                                    <%= volunteer.getAvailability() %>
                                   </span>
                               </div>
-                          </div>-->
+                          </div>
                                   
                       </div>
 
                       <!-- Profile Edit -->
                       <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                           <form action="VolUpdateProfileServlet" method="POST">
+                              <input type="hidden" name="userID" value="<%= volunteer.getUserID() %>">
                               <div class="row mb-3">
                                   <label for="name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                   <div class="col-md-8 col-lg-9">
-                                      <input name="name" type="text" class="form-control" id="name" value="<%= user.getName() %>">
+                                      <input name="name" type="text" class="form-control" id="name" value="<%= volunteer.getName() %>">
                                   </div>
                               </div>
 
                               <div class="row mb-3">
                                   <label for="nric" class="col-md-4 col-lg-3 col-form-label">NRIC</label>
                                   <div class="col-md-8 col-lg-9">
-                                      <input name="nric" type="text" class="form-control" id="nric" value="<%= user.getNric() %>">
+                                      <input name="nric" type="text" class="form-control" id="nric" value="<%= volunteer.getNric() %>">
                                   </div>
                               </div>
 
                               <div class="row mb-3">
                                 <label for="age" class="col-md-4 col-lg-3 col-form-label">Age</label>
                                 <div class="col-md-8 col-lg-9">
-                                  <input type="number" id="age" name="age" value="<%= user.getAge() %>" class="form-control">
+                                  <input type="number" id="age" name="age" value="<%= volunteer.getAge() %>" class="form-control">
                                 </div>
                               </div>
 
                               <div class="row mb-3">
                                   <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                   <div class="col-md-8 col-lg-9">
-                                      <input name="email" type="email" class="form-control" id="email" value="<%= user.getEmail() %>">
+                                      <input name="email" type="email" class="form-control" id="email" value="<%= volunteer.getEmail() %>">
                                   </div>
                               </div>
                               
                               <div class="row mb-3">
                                 <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
                                 <div class="col-md-8 col-lg-9">
-                                  <input type="text" id="phone" name="phone" value="<%= user.getPhoneNum() %>" class="form-control">
+                                  <input type="text" id="phone" name="phone" value="<%= volunteer.getPhoneNum() %>" class="form-control">
                                 </div>
                               </div>
 
-<!--                             <div class="row mb-3">
-                                <label for="volEmployment" class="col-md-4 col-lg-3 col-form-label">Occupation</label>
+                             <div class="row mb-3">
+                                <label for="volEmployment" class="col-md-4 col-lg-3 col-form-label">Employment</label>
                                 <div class="col-md-8 col-lg-9">
                                     <select name="volEmployment" class="form-control" id="volEmployment">
-                                        <option value="Working" <%---= (vol.getVolEmployment().equals("Working")) ? "selected" : "" ---%>>Working</option>
-                                        <option value="Student" <%---= (vol.getVolEmployment().equals("Student")) ? "selected" : "" ---%>>Student</option>
-                                        <option value="N/A" <%---= (vol.getVolEmployment().equals("N/A")) ? "selected" : "" ---%>>N/A</option>
+                                        <option value="Working" <%= "Working".equals(volunteer.getVolEmployment()) ? "selected" : "" %>>Working</option>
+                                        <option value="Student" <%= "Student".equals(volunteer.getVolEmployment()) ? "selected" : "" %>>Student</option>
+                                        <option value="N/A" <%= "N/A".equals(volunteer.getVolEmployment()) ? "selected" : "" %>>N/A</option>
                                     </select>
                                 </div>
-                            </div>-->
+                            </div>
 
                             <div class="row mb-3">
                                 <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                                 <div class="col-md-8 col-lg-9">
-                                    <input name="address" type="text" class="form-control" id="address" value="<%= user.getAddress() %>">
+                                    <input name="address" type="text" class="form-control" id="address" value="<%= volunteer.getAddress() %>">
                                 </div>
                             </div>
 
-<!--                            <div class="row mb-3">
+                            <div class="row mb-3">
                                 <label for="shelterID" class="col-md-4 col-lg-3 col-form-label">Choose Shelter</label>
                                 <div class="col-md-8 col-lg-9">
                                     <select name="shelterID" class="form-control" id="shelterID">
-                                        <%--- for (Shelter shelter : shelterList) { ---%>
-                                            <option value="<%---= shelter.getShelterID() ---%>" <%---= (vol.getShelterID() == shelter.getShelterID()) ? "selected" : "" ---%>>
-                                                <%---= shelter.getShelterName() ---%>
+                                        <% for (Shelter shelter : shelterList) { %>
+                                            <option value="<%= shelter.getShelterID() %>" 
+                                                <%= (volunteer.getShelterID() == shelter.getShelterID()) ? "selected" : "" %>>
+                                                <%= shelter.getShelterName() %>
                                             </option>
-                                        <%--- } ---%>
+                                        <% } %>
                                     </select>
                                 </div>
-                            </div>-->
+                            </div>
 
-<!--                              <div class="row mb-3">
+                              <div class="row mb-3">
                                 <label for="availability" class="col-md-4 col-lg-3 col-form-label">Availability Status</label>
                                 <div class="col-md-8 col-lg-9">
                                     <select name="availability" class="form-control" id="status">
-                                        <%---
-                                            String availability = vol.getAvailability(); // Assuming `vol` is the Volunteer object
-                                        ---%>
-                                        <option value="Available" <%---= "Available".equals(availability) ? "selected" : "" ---%>>Available</option>
-                                        <option value="Unavailable" <%---= "Unavailable".equals(availability) ? "selected" : "" ---%>>Unavailable</option>
+                                        <option value="Available" <%= "Available".equals(volunteer.getAvailability()) ? "selected" : "" %>>Available</option>
+                                        <option value="Unavailable" <%= "Unavailable".equals(volunteer.getAvailability()) ? "selected" : "" %>>Unavailable</option>
                                     </select>
                                 </div>
-                              </div>-->
+                              </div>
 
 
                               <div class="text-center">
@@ -406,7 +305,7 @@
   <footer id="footer" class="footer">
     <div class="container">
       <div class="copyright">
-        &copy; 2024 <strong><span>Volunteer Management</span></strong>. All Rights Reserved
+<!--        &copy; 2024 <strong><span>Volunteer Management</span></strong>. All Rights Reserved-->
       </div>
     </div>
   </footer><!-- End Footer -->

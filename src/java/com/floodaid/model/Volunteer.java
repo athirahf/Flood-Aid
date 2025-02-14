@@ -5,7 +5,18 @@ public class Volunteer extends User {
     private String availability;
     private int isLeader;
     private int shelterID;
+    private String shelterName;
 
+    // Constructor including all fields
+    public Volunteer(int userID, String name, String email, String role, String username, String password, String nric, int age, String address, String phoneNum, String registrationTime, String volEmployment, String availability, int isLeader, int shelterID, String shelterName) {
+        super(userID, name, email, role, username, password, nric, age, address, phoneNum, registrationTime);
+        this.volEmployment = volEmployment;
+        this.availability = availability;
+        this.isLeader = isLeader;
+        this.shelterID = shelterID;
+        this.shelterName = shelterName;
+    }
+    
     // Constructor including all fields
     public Volunteer(int userID, String name, String email, String role, String username, String password, String nric, int age, String address, String phoneNum, String registrationTime, String volEmployment, String availability, int isLeader, int shelterID) {
         super(userID, name, email, role, username, password, nric, age, address, phoneNum, registrationTime);
@@ -36,4 +47,7 @@ public class Volunteer extends User {
 
     public int getShelterID() { return shelterID; }
     public void setShelterID(int shelterID) { this.shelterID = shelterID; }
+    
+    public String getShelterName() { return shelterName; }
+
 }

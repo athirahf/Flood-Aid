@@ -56,7 +56,7 @@ public class VolunteerDAO {
     // ✅ Retrieve volunteer details by userID
     public Volunteer getVolunteerByID(int userID) {
         Volunteer volunteer = null;
-        String sql = "SELECT * FROM volunteer v JOIN users u ON v.user_ID = u.user_ID WHERE v.user_ID = ?";
+        String sql = "SELECT * FROM volunteer v JOIN users u ON v.user_ID = u.user_ID LEFT JOIN SHELTER s ON v.SHELTER_ID = s.SHELTER_ID WHERE v.user_ID = ?";
 
          try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -66,21 +66,22 @@ public class VolunteerDAO {
 
             if (rs.next()) {
                 volunteer = new Volunteer(
-                    rs.getInt("userID"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("role"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("nric"),
-                    rs.getInt("age"),
-                    rs.getString("address"),
-                    rs.getString("phoneNum"),
-                    rs.getString("registrationTime"),
-                    rs.getString("volEmployment"),
-                    rs.getString("availability"),
-                    rs.getInt("isLeader"),
-                    rs.getInt("shelterID")
+                    rs.getInt("USER_ID"),
+                    rs.getString("NAME"),
+                    rs.getString("EMAIL"),
+                    rs.getString("USER_ROLE"),
+                    rs.getString("USERNAME"),
+                    rs.getString("PASSWORD"),
+                    rs.getString("NRIC"),
+                    rs.getInt("AGE"),
+                    rs.getString("ADDRESS"),
+                    rs.getString("PHONENUM"),
+                    rs.getString("REGISTRATION_TIME"),
+                    rs.getString("VOL_EMPLOYMENT"),
+                    rs.getString("AVAILABILITY"),
+                    rs.getInt("IS_LEADER"),
+                    rs.getInt("SHELTER_ID"),
+                    rs.getString("SHELTER_NAME")
                 );
             }
         } catch (SQLException e) {
@@ -201,4 +202,47 @@ public class VolunteerDAO {
         }
         return count;
     }
+    
+    public boolean updateVolunteer(int userID, String name, String nric, int age, String address, String phone, 
+                               String email, String volEmployment, int shelterID, String availability) {
+        String sqlUser = "UPDATE USERS SET NAME = ?, NRIC = ?, AGE = ?, ADDRESS = ?, PHONENUM = ?, EMAIL = ? WHERE USER_ID = ?";
+        String sqlVolunteer = "UPDATE VOLUNTEER SET VOL_EMPLOYMENT = ?, SHELTER_ID = ?, AVAILABILITY = ? WHERE USER_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmtUser = conn.prepareStatement(sqlUser);
+             PreparedStatement stmtVolunteer = conn.prepareStatement(sqlVolunteer)) {
+
+            // 🔍 Debugging Output
+            System.out.println("🔄 Updating USERS table for userID: " + userID);
+            stmtUser.setString(1, name);
+            stmtUser.setString(2, nric);
+            stmtUser.setInt(3, age);
+            stmtUser.setString(4, address);
+            stmtUser.setString(5, phone);
+            stmtUser.setString(6, email);
+            stmtUser.setInt(7, userID);
+            int rowsUpdatedUser = stmtUser.executeUpdate();
+
+            System.out.println("🔄 Updating VOLUNTEER table for userID: " + userID);
+            stmtVolunteer.setString(1, volEmployment);
+            stmtVolunteer.setInt(2, shelterID);
+            stmtVolunteer.setString(3, availability);
+            stmtVolunteer.setInt(4, userID);
+            int rowsUpdatedVolunteer = stmtVolunteer.executeUpdate();
+
+            boolean success = (rowsUpdatedUser > 0 && rowsUpdatedVolunteer > 0);
+            if (success) {
+                System.out.println("✅ Update successful for userID: " + userID);
+            } else {
+                System.out.println("❌ Update failed, no rows affected.");
+            }
+            return success;
+
+        } catch (SQLException e) {
+            System.out.println("❌ SQL Exception: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
