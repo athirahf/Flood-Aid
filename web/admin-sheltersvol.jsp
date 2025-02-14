@@ -91,7 +91,6 @@
                                   <th scope="col">Age</th>
                                   <th scope="col">Phone No</th>
                                   <th scope="col">Email</th>
-                                  <th scope="col">Employment</th>
                                   <th scope="col">Status</th>
                                   <th scope="col">Role</th>
                                   <th scope="col">Action</th>
@@ -107,7 +106,6 @@
                                   <td><%= vol.getAge() %></td>
                                   <td><%= vol.getPhoneNum() %></td>
                                   <td><%= vol.getEmail() %></td>
-                                  <td><%= vol.getVolEmployment() %></td>
                                   <td>
                                       <span class="badge <%= vol.getAvailability().equals("Available") ? "bg-success" : "bg-secondary" %>">
                                           <%= vol.getAvailability() %>
@@ -122,7 +120,9 @@
                                     <div class="filter">
                                         <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a class="dropdown-item" href="admin-viewvolunteer.jsp?userID=<%= vol.getUserID() %>">View</a></li>
+                                            <li><a class="dropdown-item" href="AppointLeaderServlet?volunteer_id=<%= vol.getUserID() %>&shelterID=<%= vol.getShelterID() %>">
+                                                Appoint as Leader
+                                            </a></li>
                                             <li><a class="dropdown-item" href="#" onclick="openReassignModal('<%= vol.getUserID() %>', 'volunteer')">Reassign Shelter</a></li>
                                         </ul>
                                     </div>
