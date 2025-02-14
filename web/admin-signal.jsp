@@ -112,7 +112,7 @@
 
                                                         <span class="badge <%= badgeClass %>"><%= status %></span>
                                                     </td>
-                                                    <td><%= signal.getSignalRemark() %></td>
+                                                    <td><%= (signal.getSignalRemark() != null) ? signal.getSignalRemark() : " - " %></td>
                                                     <td>
                                                         <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                                             <div class="filter">
