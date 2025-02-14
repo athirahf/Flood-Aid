@@ -87,7 +87,7 @@
                     %>
                         <tr>
                             <th scope="row"><%= rowNumber++ %></th> <!-- ✅ Uses row number instead of Shelter ID -->
-                            <td><%= shelter.getShelterName() %></td>
+                            <td><a href="AdminShelterVolunteersServlet?shelterID=<%= shelter.getShelterID() %>" class="text-primary"><%= shelter.getShelterName() %></a></td>
                             <td><%= shelter.getShelterCapacity() %></td>
                             <td>0</td> <!-- Assuming current occupants will be added later -->
                             <td><%= shelter.getShelterAddress() %></td>

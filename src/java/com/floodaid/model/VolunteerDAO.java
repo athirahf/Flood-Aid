@@ -244,5 +244,89 @@ public class VolunteerDAO {
             return false;
         }
     }
+    
+    // ✅ Retrieve all volunteers assigned to a specific shelter
+    public List<Volunteer> getVolunteersByShelterID(int shelterID) {
+        List<Volunteer> volunteers = new ArrayList<>();
+        String sql = "SELECT u.USER_ID, u.NAME, u.EMAIL, u.AGE, u.PHONENUM, " +
+                     "v.VOL_EMPLOYMENT, v.AVAILABILITY, v.IS_LEADER " +
+                     "FROM USERS u " +
+                     "JOIN VOLUNTEER v ON u.USER_ID = v.USER_ID " +
+                     "WHERE v.SHELTER_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, shelterID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Volunteer volunteer = new Volunteer(
+                    rs.getInt("USER_ID"),
+                    rs.getString("NAME"),
+                    rs.getString("EMAIL"),
+                    "Volunteer", // Hardcoded role for volunteers
+                    "", // Username not needed here
+                    "", // Password not needed here
+                    "", // NRIC not needed here
+                    rs.getInt("AGE"),
+                    "", // Address not needed here
+                    rs.getString("PHONENUM"),
+                    "", // Registration time not needed here
+                    rs.getString("VOL_EMPLOYMENT"),
+                    rs.getString("AVAILABILITY"),
+                    rs.getInt("IS_LEADER"),
+                    shelterID
+                );
+                volunteers.add(volunteer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return volunteers;
+    }
+
+    public boolean appointLeader(int volunteerID, int shelterID) {
+        String sql = "UPDATE VOLUNTEER SET IS_LEADER = 1 WHERE USER_ID = ? AND SHELTER_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, volunteerID);
+            stmt.setInt(2, shelterID);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean reassignVolunteerShelter(int volunteerID, int newShelterID) {
+        String resetLeaderSQL = "UPDATE VOLUNTEER SET IS_LEADER = 0 WHERE USER_ID = ?";
+        String updateShelterSQL = "UPDATE VOLUNTEER SET SHELTER_ID = ? WHERE USER_ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement resetStmt = conn.prepareStatement(resetLeaderSQL);
+             PreparedStatement updateStmt = conn.prepareStatement(updateShelterSQL)) {
+
+            // Step 1: Reset is_leader if they were a leader
+            resetStmt.setInt(1, volunteerID);
+            resetStmt.executeUpdate(); // Execute leader reset
+
+            // Step 2: Reassign the shelter
+            updateStmt.setInt(1, newShelterID);
+            updateStmt.setInt(2, volunteerID);
+            int rowsUpdated = updateStmt.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
