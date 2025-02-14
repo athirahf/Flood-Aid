@@ -11,29 +11,42 @@ import com.floodaid.model.NeedDAO;
 @WebServlet("/AdminNeedAddServlet")
 public class AdminNeedAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        // Get the logged-in user ID from session
+        Integer userID = (Integer) request.getSession().getAttribute("userID");
+        
+        // Validate session user ID
+        if (userID == null) {
+            response.sendRedirect("login.jsp?error=session_expired");
+            return;
+        }
+        
         // Get form data from request
         String needItem = request.getParameter("NEED_ITEM");
         String needQuantityStr = request.getParameter("NEED_QUANTITY");
         String shelterIDStr = request.getParameter("shelterID");
-        String userIDStr = request.getParameter("USER_ID");
 
         // Validate input
         if (needItem == null || needItem.isEmpty() || 
             needQuantityStr == null || needQuantityStr.isEmpty() ||
-            shelterIDStr == null || shelterIDStr.isEmpty() ||
-            userIDStr == null || userIDStr.isEmpty()) {
+            shelterIDStr == null || shelterIDStr.isEmpty()) {
             
-            response.sendRedirect("admin-addNeed.jsp?error=missing_fields");
+            response.sendRedirect("admin-needAdd.jsp?ShelterID=0&error=missing_fields");
             return;
         }
 
-        int needQuantity, shelterID, userID;
+        int needQuantity, shelterID;
         try {
             needQuantity = Integer.parseInt(needQuantityStr);
             shelterID = Integer.parseInt(shelterIDStr);
-            userID = Integer.parseInt(userIDStr);
+            
+            // Validate input
+            if (shelterID == 0) {
+                response.sendRedirect("admin-needAdd.jsp?ShelterID=0&error=missing_shelter");
+                return;
+            }
         } catch (NumberFormatException e) {
-            response.sendRedirect("admin-addNeed.jsp?error=invalid_input");
+            response.sendRedirect("admin-needAdd.jsp?ShelterID=0&error=invalid_input");
             return;
         }
 
@@ -44,7 +57,7 @@ public class AdminNeedAddServlet extends HttpServlet {
         if (success) {
             response.sendRedirect("AdminNeedServlet?success=added");
         } else {
-            response.sendRedirect("admin-addNeed.jsp?error=registration_failed");
+            response.sendRedirect("admin-needAdd.jsp?ShelterID=0&error=request_failed");
         }
     }
 }

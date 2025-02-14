@@ -219,7 +219,7 @@
             <div class="card-body">
               <h5 class="card-title">Activity <span>| Banjir Rescue</span></h5>
 
-              <div class="activity" style="max-height: 365px; overflow-y: auto; padding: 10px;">
+              <div class="activity" style="max-height: 315px; overflow-y: auto; padding: 10px;">
                 <%
                     SignalDAO signalDAO = new SignalDAO();
                     List<Signal> signals = signalDAO.getAllSignal();

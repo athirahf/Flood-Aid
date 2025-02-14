@@ -12,7 +12,34 @@
 <%
     Integer userID = (Integer) session.getAttribute("userID");
     String ShelterID = request.getParameter("ShelterID");
-    int shelterID = Integer.parseInt(ShelterID);
+    int shelterID = 0; // Default value
+
+    if (ShelterID != null && !ShelterID.isEmpty()) {
+        try {
+            shelterID = Integer.parseInt(ShelterID);
+        } catch (NumberFormatException e) {
+            shelterID = 0;
+        }
+    }
+%>
+
+<%
+    String error = request.getParameter("error");
+    if (error != null) {
+%>
+    <script>
+        <% if ("missing_fields".equals(error)) { %>
+            alert("Please fill in the form.");
+        <% } else if ("missing_shelter".equals(error)) { %>
+            alert("Please select a shelter before requesting the need.");
+        <% } else if ("invalid_input".equals(error)) { %>
+            alert("Input Incorrect.");
+        <% } else if ("request_failed".equals(error)) { %>
+            alert("Request failed. Please try again.");
+        <% } %>
+    </script>
+<%
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -168,14 +195,6 @@
                   <div class="form-floating">
                     <input type="number" class="form-control" id="quantity" name="NEED_QUANTITY" placeholder="Quantity" required>
                     <label for="quantity">Quantity</label>
-                  </div>
-                </div>
-
-
-                <div class="col-md-12">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="user" name="USER_ID" value="<%= userID %>">
-                    <label for="user">Enter your user ID</label>
                   </div>
                 </div>
 

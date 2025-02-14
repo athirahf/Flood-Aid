@@ -125,7 +125,7 @@
                                             </div>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon1">ADDRESS</span>
-                                                <textarea class="form-control" style="height: 0px; background-color: white;" value="<%= signal.getSignalArea() %>" readonly disabled></textarea>
+                                                <input class="form-control" style="background-color: white;" value="<%= signal.getSignalArea() %>" readonly disabled></input>
                                             </div>
                                             <% 
                                                 ShelterDAO shelterDAO = new ShelterDAO();
