@@ -108,7 +108,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li><a class="dropdown-item" href="admin-viewuser.jsp?userID=<%= user.getUserID() %>">View</a></li>
                                     <li><a class="dropdown-item" href="admin-edituser.jsp?userID=<%= user.getUserID() %>">Edit</a></li>
-                                    <li><a class="dropdown-item" href="DeleteUsersServlet?userID=<%= user.getUserID() %>" onclick="return confirmDelete();">Delete</a></li>
+                                    <li><a class="dropdown-item" href="DeleteUserServlet?userID=<%= user.getUserID() %>" onclick="return confirmDelete();">Delete</a></li>
                                 </ul>
                             </div>
                         </div>

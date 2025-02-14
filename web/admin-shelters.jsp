@@ -158,7 +158,7 @@
   
   <script>
     function confirmDelete() {
-        return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+        return confirm('Are you sure you want to delete this shelter? This action cannot be undone.');
     }
   </script>
 

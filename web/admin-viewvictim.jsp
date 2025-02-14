@@ -132,7 +132,7 @@
 
                             <!-- Buttons -->
                             <div class="text-center">
-                                <a href="AdminUsersServlet" class="btn btn-secondary">Back</a>
+                                <a href="AdminSheltersServlet" class="btn btn-secondary">Back</a>
                             </div>
                         </form>
                         
@@ -160,7 +160,6 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Default</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -171,19 +170,6 @@
                                             <td><%= contact.getEmail() %></td>
                                             <td><%= contact.getPhoneNum() %></td>
                                             <td><%= contact.isDefault() ? "✅" : "" %></td>
-                                            <td>
-                                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                                    <div class="filter">
-                                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-md bi-pencil-square"></a>
-                                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editEmergencyContactModal" 
-                                                                onclick="openEditModal('<%= contact.getId() %>', '<%= contact.getName() %>', '<%= contact.getRelation() %>', '<%= contact.getEmail() %>', '<%= contact.getPhoneNum() %>', '<%= contact.isDefault() ? "1" : "0" %>')">Edit</a></li>
-                                                            <li><a class="dropdown-item" href="SetDefaultEmergencyContactServlet?emerCtc_ID=<%= contact.getId() %>">Set as Default</a></li>
-                                                            <li><a class="dropdown-item text-danger" href="DeleteEmergencyContactServlet?emerCtc_ID=<%= contact.getId() %>" onclick="return confirmDelete();">Delete</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
                                         </tr>
                                     <% } %>
                                 </tbody>

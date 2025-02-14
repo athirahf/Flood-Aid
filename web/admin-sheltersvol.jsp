@@ -155,6 +155,7 @@
                                 <th scope="col">Phone No</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Emergency Contact</th>
+                                <th>Actions</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -171,6 +172,15 @@
                                     <td><%= victim.getPhoneNum() %></td>
                                     <td><%= victim.getAddress() %></td>
                                     <td><%= victim.getEmergencyContact() %></td> <!-- Show emergency contact -->
+                                    <td>
+                                        <div class="filter">
+                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li><a class="dropdown-item" href="AdminViewVictimServlet?userID=<%= victim.getUserID() %>">View</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="openReassignModal('<%= victim.getUserID() %>', 'victim')">Reassign Shelter</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <% 
                                         }
@@ -197,7 +207,7 @@
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reassignModalLabel">Reassign Volunteer to a Shelter</h5>
+                        <h5 class="modal-title" id="reassignModalLabel">Reassign to a Shelter</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
