@@ -15,7 +15,7 @@ public class CancelNeedServlet extends HttpServlet {
         String needIDStr = request.getParameter("needID");
 
         if (needIDStr == null || needIDStr.isEmpty()) {
-            response.sendRedirect("volunteer-need.jsp?error=missing_needID");
+            response.sendRedirect("ManageNeedServlet?error=missing_needID");
             return;
         }
 
@@ -23,7 +23,7 @@ public class CancelNeedServlet extends HttpServlet {
         try {
             needID = Integer.parseInt(needIDStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("volunteer-need.jsp?error=invalid_needID");
+            response.sendRedirect("ManageNeedServlet?error=invalid_needID");
             return;
         }
 
@@ -31,9 +31,9 @@ public class CancelNeedServlet extends HttpServlet {
         boolean success = needDAO.cancelNeed(needID);
 
         if (success) {
-            response.sendRedirect("volunteer-need.jsp?success=canceled");
+            response.sendRedirect("ManageNeedServlet?success=canceled");
         } else {
-            response.sendRedirect("volunteer-need.jsp?error=cancel_failed");
+            response.sendRedirect("ManageNeedServlet?error=cancel_failed");
         }
     }
 }

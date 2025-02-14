@@ -56,7 +56,7 @@ public class RequestNeedServlet extends HttpServlet {
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                response.sendRedirect("volunteer-reqneed.jsp?success=request_sent");
+                response.sendRedirect("ManageNeedServlet?success=request_sent");
             } else {
                 response.sendRedirect("volunteer-reqneed.jsp?error=request_failed");
             }
