@@ -10,24 +10,17 @@ import com.floodaid.model.NeedDAO;
 
 @WebServlet("/AdminNeedDeleteServlet")
 public class AdminNeedDeleteServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get form data from request
-        String needIDStr = request.getParameter("NeedID");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String needIDStr = request.getParameter("needID");
 
         // Validate input
         if (needIDStr == null || needIDStr.isEmpty()) {
             
-            response.sendRedirect("admin-needDelete.jsp?NeedID="+Integer.parseInt(request.getParameter("needID"))+"&error=missing_fields");
+            response.sendRedirect("AdminNeedServlet?error=missing_id");
             return;
         }
 
-        int needID;
-        try {
-            needID = Integer.parseInt(needIDStr);
-        } catch (NumberFormatException e) {
-            response.sendRedirect("admin-needDelete.jsp?NeedID="+Integer.parseInt(request.getParameter("needID"))+"&error=invalid_input");
-            return;
-        }
+        int needID = Integer.parseInt(needIDStr);
 
         // Insert need into the database
         NeedDAO needDAO = new NeedDAO();
@@ -36,7 +29,7 @@ public class AdminNeedDeleteServlet extends HttpServlet {
         if (success) {
             response.sendRedirect("AdminNeedServlet?success=deleted");
         } else {
-            response.sendRedirect("admin-needDelete.jsp?NeedID="+Integer.parseInt(request.getParameter("needID"))+"&error=update_failed");
+            response.sendRedirect("AdminNeedServlet?error=delete_failed");
         }
     }
 }

@@ -88,8 +88,8 @@ public class NeedDAO {
         return need;
     }
     
-    public boolean updateNeed(String needItem, int needQuantity, int shelterID, String needStatus, int needID) {
-        String sql = "UPDATE NEED SET ACTION_TIME=CURRENT_TIMESTAMP, NEED_ITEM = ?, NEED_QUANTITY = ?, SHELTER_ID = ?, NEED_STATUS=? WHERE NEED_ID = ?";
+    public boolean updateNeed(String needItem, int needQuantity, int shelterID, String needStatus, int needID, int userID) {
+        String sql = "UPDATE NEED SET ACTION_TIME=CURRENT_TIMESTAMP, NEED_ITEM = ?, NEED_QUANTITY = ?, SHELTER_ID = ?, NEED_STATUS=?, USER_ID=? WHERE NEED_ID = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -98,7 +98,8 @@ public class NeedDAO {
             stmt.setInt(2, needQuantity);
             stmt.setInt(3, shelterID);
             stmt.setString(4, needStatus);
-            stmt.setInt(5, needID);
+            stmt.setInt(5, userID);
+            stmt.setInt(6, needID);
 
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;

@@ -127,5 +127,24 @@ public class ShelterDAO {
             return false;
         }
     }
+    
+    public String getShelterNameByID(int shelterID) {
+        String sql = "SELECT SHELTER_NAME FROM SHELTER WHERE SHELTER_ID = ?";
+        String shelterName = "Unknown Shelter"; // Default if not found
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, shelterID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                shelterName = rs.getString("SHELTER_NAME");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shelterName;
+    }
 
 }

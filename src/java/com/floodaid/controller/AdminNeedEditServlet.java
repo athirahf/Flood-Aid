@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.floodaid.model.NeedDAO;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/AdminNeedEditServlet")
 public class AdminNeedEditServlet extends HttpServlet {
@@ -17,6 +18,14 @@ public class AdminNeedEditServlet extends HttpServlet {
         String shelterIDStr = request.getParameter("shelterID");
         String needIDStr = request.getParameter("NeedID");
         String needStatus = request.getParameter("NEED_STATUS");
+        
+        HttpSession session = request.getSession();
+        Integer userID = (Integer) session.getAttribute("userID");
+
+        if (userID == null) {
+            response.sendRedirect("login.jsp"); // Redirect if session expired
+            return;
+        }
 
         // Validate input
         if (needItem == null || needItem.isEmpty() || 
@@ -40,7 +49,7 @@ public class AdminNeedEditServlet extends HttpServlet {
 
         // Insert need into the database
         NeedDAO needDAO = new NeedDAO();
-        boolean success = needDAO.updateNeed(needItem, needQuantity, shelterID, needStatus, needID);
+        boolean success = needDAO.updateNeed(needItem, needQuantity, shelterID, needStatus, needID, userID);
 
         if (success) {
             response.sendRedirect("AdminNeedServlet?success=added");

@@ -174,21 +174,21 @@
                   </div>
                 </div>
 
-
-                <div class="col-md-12">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="user" name="USER_ID" value="<%= userID %>">
-                    <label for="user">Enter your user ID</label>
-                  </div>
-                </div>
+                <input type="hidden" name="USER_ID" value="<%= userID != null ? userID : "" %>">
                     
                 <div class="col-md-12">
                     <div class="form-floating">
                         <select class="form-control" id="Status" name="NEED_STATUS">
                             <option value="<%= need.getNeedStatus() %>"><%= need.getNeedStatus() %></option>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
+                            <% if (!"Pending".equalsIgnoreCase(need.getNeedStatus())) { %>
+                                <option value="Pending">Pending</option>
+                            <% } %>
+                            <% if (!"Approved".equalsIgnoreCase(need.getNeedStatus())) { %>
+                                <option value="Approved">Approved</option>
+                            <% } %>
+                            <% if (!"Rejected".equalsIgnoreCase(need.getNeedStatus())) { %>
+                                <option value="Rejected">Rejected</option>
+                            <% } %>
                         </select>
                         <label for="Status">Select Status</label>
                     </div>

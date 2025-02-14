@@ -1,3 +1,4 @@
+<%@page import="com.floodaid.model.Shelter"%>
 <%@page import="com.floodaid.model.Need"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
@@ -95,7 +96,6 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">No</th>
-                                                <th scope="col">ID</th>
                                                 <th scope="col">Shelter</th>
                                                 <th scope="col">Item</th>
                                                 <th scope="col">Quantity</th>
@@ -114,8 +114,22 @@
                                             %>
                                                 <tr>
                                                     <th scope="row"><%= rowNumber++ %></th> <!-- ✅ Uses row number instead of Shelter ID -->
-                                                    <td><%= need.getNeedID() %></td>
-                                                    <td><%= need.getShelterID() %></td>
+                                                    <td>
+                                                        <%
+                                                            int shelterID = need.getShelterID();
+                                                            String shelterName = "Unknown Shelter"; // Default in case no match is found
+                                                            List<Shelter> shelters = (List<Shelter>) request.getAttribute("shelters");
+                                                            if (shelters != null) {
+                                                                for (Shelter s : shelters) {
+                                                                    if (s.getShelterID() == shelterID) {
+                                                                        shelterName = s.getShelterName();
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        %>
+                                                        <%= shelterName %>
+                                                    </td>
                                                     <td><%= need.getNeedItem() %></td>
                                                     <td><%= need.getNeedQuantity() %></td>
                                                     <td>
@@ -135,14 +149,14 @@
                                                         <span class="badge <%= badgeClass %>"><%= status %></span>
                                                     </td>
                                                     <td><%= need.getTimeRequest() %></td>
-                                                    <td><%= need.getActionTime() %></td>
+                                                    <td><%= (need.getActionTime() != null) ? need.getActionTime() : " - " %></td>
                                                     <td>
                                                         <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                                             <div class="filter">
                                                                 <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
                                                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                                     <li><a class="dropdown-item" href="admin-needEdit.jsp?NeedID=<%= need.getNeedID() %>&ShelterID=<%= need.getShelterID() %>">Edit</a></li>
-                                                                    <li><a class="dropdown-item" href="admin-needDelete.jsp?NeedID=<%= need.getNeedID() %>">Delete</a></li>
+                                                                    <li><a class="dropdown-item" href="AdminNeedDeleteServlet?needID=<%= need.getNeedID() %>" onclick="return confirmDelete();">Delete</a></li>
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -185,6 +199,12 @@
                 <!-- Template Main JS File -->
                 <script src="assets/js/main.js"></script>
             </div>
+            
+            <script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this need? This action cannot be undone.');
+                }
+            </script>
             <!-- END OF JS FILE -->
         </body>
     <!-- End BODY -->
