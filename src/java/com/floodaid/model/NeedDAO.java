@@ -126,6 +126,33 @@ public class NeedDAO {
         }
     }
 
+    public List<Need> getNeedsByShelterID(int shelterID) {
+        List<Need> needs = new ArrayList<>();
+        String sql = "SELECT * FROM NEED WHERE shelter_ID = ? ORDER BY time_request DESC";
 
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, shelterID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Need need = new Need(
+                    rs.getInt("NEED_ID"),
+                    rs.getString("NEED_ITEM"),
+                    rs.getInt("NEED_QUANTITY"),
+                    rs.getTimestamp("TIME_REQUEST"),
+                    rs.getTimestamp("ACTION_TIME"),
+                    rs.getString("NEED_STATUS"),
+                    rs.getInt("SHELTER_ID"),
+                    rs.getInt("USER_ID") // Might be NULL for requests
+                );
+                needs.add(need);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return needs;
+    }
 }
 
