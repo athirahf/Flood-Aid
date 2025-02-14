@@ -112,7 +112,11 @@ public class SignalDAO {
                 
                  // Update VICTIM table
                 try (PreparedStatement stmt2 = conn.prepareStatement(updateUserSQL)) {
-                    stmt2.setNull(1, java.sql.Types.INTEGER); 
+                    if(shelterID != 0){
+                        stmt2.setInt(1, shelterID);
+                    } else {
+                        stmt2.setNull(1, java.sql.Types.INTEGER); 
+                    }
                     stmt2.setInt(2, userID);
                     stmt2.executeUpdate();
                 }
