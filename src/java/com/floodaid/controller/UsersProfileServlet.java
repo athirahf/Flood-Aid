@@ -38,7 +38,15 @@ public class UsersProfileServlet extends HttpServlet {
             session.setAttribute("user", user); // ✅ Reload updated user object into session
             request.setAttribute("user", user);
             request.setAttribute("emergencyContacts", emergencyContacts);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("users-profile.jsp");
+            
+            String profilePage;
+            if ("Admin".equalsIgnoreCase(user.getRole())) {
+                profilePage = "admin-profile.jsp";  // Admins go to admin-profile.jsp
+            } else {
+                profilePage = "users-profile.jsp";  // Regular users go to users-profile.jsp
+            }
+            
+            RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
             dispatcher.forward(request, response);
         } else {
             response.sendRedirect("pages-login.html?error=session_expired");

@@ -63,17 +63,36 @@ public class UpdateProfileServlet extends HttpServlet {
 
                 session.setAttribute("user", updatedUser); // ✅ Update session with latest data
 
-                response.sendRedirect("users-profile.jsp?success=profile_updated");
+                String redirectPage;
+                if ("Admin".equalsIgnoreCase(updatedUser.getRole())) {
+                    redirectPage = "admin-profile.jsp";  // Redirect Admins to admin-profile.jsp
+                } else {
+                    redirectPage = "users-profile.jsp";  // Redirect Users to users-profile.jsp
+                }
+                
+                response.sendRedirect(redirectPage + "?success=profile_updated");
             } else {
                 conn.rollback(); 
-                response.sendRedirect("users-profile.jsp?error=no_update");
+                
+                String errorPage = "users-profile.jsp"; // Default for users
+                if ("Admin".equalsIgnoreCase(session.getAttribute("role").toString())) {
+                    errorPage = "admin-profile.jsp"; // Admins go to admin-profile.jsp
+                }
+                
+                response.sendRedirect(errorPage + "?error=no_update");
             }
 
             stmt.close();
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("users-profile.jsp?error=update_failed");
+            
+            String errorPage = "users-profile.jsp"; // Default for users
+            if ("Admin".equalsIgnoreCase(session.getAttribute("role").toString())) {
+                errorPage = "admin-profile.jsp"; // Admins go to admin-profile.jsp
+            }
+
+            response.sendRedirect(errorPage + "?error=update_failed");
         }
     }
 }

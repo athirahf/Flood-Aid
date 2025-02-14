@@ -22,6 +22,9 @@ public class ChangePasswordServlet extends HttpServlet {
             response.sendRedirect("pages-login.html?error=session_expired");
             return;
         }
+        
+        User userSession = (User) session.getAttribute("user");
+        String userRole = userSession.getRole();
 
         // Retrieve parameters from form
         String username = request.getParameter("username");
@@ -34,7 +37,16 @@ public class ChangePasswordServlet extends HttpServlet {
         // Validate current password
         User user = userDAO.validateUser(username, currentPassword);
         if (user == null) {
-            response.sendRedirect("admin-profile.jsp?error=wrong_current_password");
+            String redirectPage;
+            if (userRole.equalsIgnoreCase("Admin")) {
+                redirectPage = "admin-profile.jsp";
+            } else if (userRole.equalsIgnoreCase("Volunteer")) {
+                redirectPage = "volunteer-profile.jsp";
+            } else {
+                redirectPage = "users-profile.jsp";
+            }
+            
+            response.sendRedirect(redirectPage + "?error=wrong_current_password");
             return;
         }
 
@@ -45,7 +57,15 @@ public class ChangePasswordServlet extends HttpServlet {
             session.invalidate(); // ✅ Logout after password change
             response.sendRedirect("pages-login.html?success=password_updated");
         } else {
-            response.sendRedirect("admin-profile.jsp?error=password_update_failed");
+            String redirectPage;
+            if (userRole.equalsIgnoreCase("Admin")) {
+                redirectPage = "admin-profile.jsp";
+            } else if (userRole.equalsIgnoreCase("Volunteer")) {
+                redirectPage = "volunteer-profile.jsp";
+            } else {
+                redirectPage = "users-profile.jsp";
+            }
+            response.sendRedirect(redirectPage + "?error=password_update_failed");
         }
     }
 }
