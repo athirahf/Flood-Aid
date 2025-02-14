@@ -13,7 +13,6 @@ public class VolDashboardDAO {
     public static int getCount(String tableName) {
         int count = 0;
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
 
             String query = "SELECT COUNT(*) FROM "+ tableName;

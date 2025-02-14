@@ -43,10 +43,10 @@ public class LoginServlet extends HttpServlet {
             // Redirect based on user role
             switch (user.getRole().toLowerCase()) {
                 case "admin":
-                    response.sendRedirect("admin-index.jsp");
+                    response.sendRedirect("AdminDashboardServlet");
                     break;
                 case "user":
-                    response.sendRedirect("users-index.jsp");
+                    response.sendRedirect("UserDashboardServlet");
                     break;
                 case "volunteer":
                     response.sendRedirect("VolDashboardServlet");

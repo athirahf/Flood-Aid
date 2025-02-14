@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
 
+<%
+    Integer victimCount = (Integer) request.getAttribute("victimCount");
+    Integer volunteerCount = (Integer) request.getAttribute("volunteerCount");
+    Integer needCount = (Integer) request.getAttribute("needCount");
+
+    // Ensure null if attribute is missing, set to 0
+    victimCount = (victimCount != null) ? victimCount : 0;
+    volunteerCount = (volunteerCount != null) ? volunteerCount : 0;
+    needCount = (needCount != null) ? needCount : 0;
+    
+    String successMessage = request.getParameter("success");
+    boolean showSuccessAlert = (successMessage != null && successMessage.equals("signal_sent"));
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -171,23 +185,40 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="address" id="currentAddress" value="currentAddress">
-                <label class="form-check-label" for="currentAddress">
-                  Current Address
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="address" id="newAddress" value="newAddress">
-                <label class="form-check-label" for="newAddress">
-                  New Address
-                </label>
-              </div>
+              <form action="SendSignalServlet" method="post">
+                <input type="hidden" name="redirectPage" value="UserDashboardServlet">
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label for="inputPlace" class="col-sm-2 col-form-label">Current Place</label>
+                        <input 
+                           type="text" 
+                           class="form-control"
+                           name="inputPlace"
+                           id="inputPlace" 
+                           placeholder="Enter Place" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="top" 
+                           title="E.g. Inside the house, on the rooftop, etc.">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-6">
+                        <label for="inputArea" class="col-sm-2 col-form-label">Area</label> <!--area is not state!-->
+                        <input type="text" class="form-control" id="inputArea" name="inputArea" placeholder="Enter your area">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="inputPostcode" class="col-sm-2 col-form-label">Postcode</label>
+                        <input type="text" class="form-control" name="inputPostcode" id="inputPostcode" placeholder="Enter postcode">
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="sendSignalBtn">Send Signal</button>
+                  </div>
+              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary" id="sendSignalBtn">Send Signal!</button>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -200,66 +231,36 @@
         <div class="col-lg-12">
           <div class="row">
 
-            <!-- Locate Us Card -->
+            <!-- Victim Rescued Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Locate Us</h5>
+                  <h5 class="card-title">Victims Rescued <span>| As Now</span></h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
+                      <i class="bi bi-person-heart"></i>
                     </div>
                     <div class="ps-3">
-                      <h7>Available States:</h7>
-                      <select class="form-select" aria-label="Select a state">
-                        <option selected disabled>Choose a state</option>
-                        <option value="kelantan">Kelantan</option>
-                        <option value="sabah">Sabah</option>
-                        <option value="kuala-lumpur">Kuala Lumpur</option>
-                        <option value="selangor">Selangor</option>
-                        <option value="terengganu">Terengganu</option>
-                      </select>
+                      <h6><%= request.getAttribute("victimCount") %></h6>
                     </div>
                   </div>
                 </div>
               </div>
-            </div><!-- End Locate Us Card -->
+            </div><!-- End Victim Rescued Card -->
 
             <!-- Aid Kits Delivered Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card revenue-card">
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
 
                 <div class="card-body">
-                  <h5 class="card-title"> Aid Kits Delivered</h5>
+                  <h5 class="card-title">Needs Distributed <span>| As Now</span></h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                      <i class="bi bi-box2-heart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>3,264</h6>
+                      <h6><%= request.getAttribute("needCount") %></h6>
                     </div>
                   </div>
                 </div>
@@ -269,26 +270,15 @@
             <!-- Volunteers Engaged Card -->
             <div class="col-xxl-4 col-xl-12">
               <div class="card info-card customers-card">
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Volunteers Engaged</h5>
+                  <h5 class="card-title">Active Volunteers <span>| As Now</h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1244</h6>
+                      <h6><%= request.getAttribute("volunteerCount") %></h6>
                     </div>
                   </div>
                 </div>
@@ -563,22 +553,14 @@
   
    <!-- JavaScript to handle button click -->
   <script>
-      // Redirect to users-signal.php if "New Address" is selected
-      document.getElementById('newAddress').addEventListener('change', function () {
-        if (this.checked) {
-          window.location.href = 'users-signal.php';
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check if success parameter exists in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("success") && urlParams.get("success") === "signal_sent") {
+            document.getElementById("successAlert").style.display = "block";
         }
-      });
-
-      // Event listener for "Send Signal!" button
-      document.getElementById('sendSignalBtn').addEventListener('click', function () {
-        // Close the modal
-        let modal = bootstrap.Modal.getInstance(document.querySelector('.modal'));
-        modal.hide();
-
-        // Show the success alert
-        document.getElementById('successAlert').style.display = 'block';
-      });
+       });
   </script>
 
 </body>

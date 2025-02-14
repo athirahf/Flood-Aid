@@ -266,4 +266,24 @@ public class UserDAO {
 
         return null; // No shelter assigned
     }
+    
+    public static int getCount(String tableName) {
+        int count = 0;
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query = "SELECT COUNT(*) FROM "+ tableName;
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) count = rs.getInt(1);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

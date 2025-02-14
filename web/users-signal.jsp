@@ -9,6 +9,9 @@
         response.sendRedirect("pages-login.html?error=session_expired");
         return;
     }
+    
+    String successMessage = request.getParameter("success");
+    boolean showSuccessAlert = (successMessage != null && successMessage.equals("signal_sent"));
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -146,6 +149,13 @@
 </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
+      
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" 
+        role="alert" style="<%= showSuccessAlert ? "" : "display: none;" %> ; margin-top: 20px;">
+       Signal has been successfully sent! Please wait for admin response.
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
 
     <div class="pagetitle">
       <h1>Send Signal Information</h1>
@@ -167,6 +177,7 @@
 
               <!-- General Form Elements -->
               <form action="SendSignalServlet" method="post">
+                <input type="hidden" name="redirectPage" value="users-signal.jsp">
                 <div class="row mb-3">
                     <div class="col-sm-12">
                         <label for="inputPlace" class="col-sm-2 col-form-label">Current Place</label>
@@ -244,6 +255,14 @@
       tooltipTriggerList.forEach(function (tooltipTriggerEl) {
         new bootstrap.Tooltip(tooltipTriggerEl);
       });
+    });
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        // Check if success parameter exists in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("success") && urlParams.get("success") === "signal_sent") {
+            document.getElementById("successAlert").style.display = "block";
+        }
     });
   </script>
 

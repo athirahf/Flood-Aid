@@ -24,6 +24,12 @@ public class SendSignalServlet extends HttpServlet {
         String area = request.getParameter("inputArea");
         String postcode = request.getParameter("inputPostcode");
         int userID = (int) session.getAttribute("userID");
+        
+        // Get redirectPage to know where the request was submitted from
+        String redirectPage = request.getParameter("redirectPage");
+        if (redirectPage == null || redirectPage.isEmpty()) {
+            redirectPage = "UserDashboardServlet"; // Default fallback page
+        }
 
         // Validate inputs
         if (place == null || area == null || postcode == null || place.isEmpty() || area.isEmpty() || postcode.isEmpty()) {
@@ -36,9 +42,9 @@ public class SendSignalServlet extends HttpServlet {
         boolean success = signalDAO.registerSignal(place, area, postcode, userID);
 
         if (success) {
-            response.sendRedirect("users-signal.jsp?success=signal_sent");
+            response.sendRedirect(redirectPage + "?success=signal_sent");
         } else {
-            response.sendRedirect("users-signal.jsp?error=failed_to_send");
+            response.sendRedirect(redirectPage + "?error=failed_to_send");
         }
     }
 }
