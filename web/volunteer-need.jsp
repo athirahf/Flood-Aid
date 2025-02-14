@@ -214,7 +214,7 @@
                     <td>
                       <% if ("pending".equalsIgnoreCase(need.getNeedStatus())) { %>
                         <div class="filter">
-                          <a href="#" data-bs-toggle="dropdown" class="btn btn-info btn-sm bi-pencil-square"></a>
+                          <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
                           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             <li><a class="dropdown-item" href="volunteer-editneed.jsp?needID=<%= need.getNeedID() %>">Edit</a></li>
                             <li><a class="dropdown-item" href="CancelNeedServlet?needID=<%= need.getNeedID() %>" onclick="return confirm('Are you sure you want to cancel this request?');">Cancel</a></li>

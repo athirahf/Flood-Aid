@@ -94,7 +94,7 @@
                             <td>
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                     <div class="filter">
-                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-info btn-md bi-pencil-square"></a>
+                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a class="dropdown-item" href="admin-editshelter.jsp?shelterID=<%= shelter.getShelterID() %>">Edit</a></li>
                                             <li><a class="dropdown-item" href="DeleteShelterServlet?shelterID=<%= shelter.getShelterID() %>" onclick="return confirmDelete();">Delete</a></li>
