@@ -155,5 +155,42 @@ public class NeedDAO {
         }
         return needs;
     }
+    
+    public boolean updateNeedVol(String needItem, int needQuantity, int needID) {
+        String sql = "UPDATE NEED SET NEED_ITEM = ?, NEED_QUANTITY = ?, ACTION_TIME = CURRENT_TIMESTAMP WHERE NEED_ID = ? AND NEED_STATUS = 'Pending'";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, needItem);
+            stmt.setInt(2, needQuantity);
+            stmt.setInt(3, needID);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean cancelNeed(int needID) {
+        String sql = "DELETE FROM NEED WHERE NEED_ID = ? AND NEED_STATUS = 'Pending'";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, needID);
+
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
 
