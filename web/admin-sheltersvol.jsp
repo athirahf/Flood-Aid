@@ -1,3 +1,4 @@
+<%@page import="com.floodaid.model.Victim"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <jsp:include page="checkSession.jsp" />
 <jsp:include page="include/admin-extension.jsp" />
@@ -70,71 +71,122 @@
 
           <div class="card">
             <div class="card-body">
-            <h5 class="card-title">Volunteers Assigned to Shelter: <%= shelter.getShelterName() %></h5>
-
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Age</th>
-                <th scope="col">Phone No</th>
-                <th scope="col">Email</th>
-                <th scope="col">Employment</th>
-                <th scope="col">Status</th>
-                <th scope="col">Role</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (volunteers != null && !volunteers.isEmpty()) {
-                int index = 1;
-                for (Volunteer vol : volunteers) { %>
-            <tr>
-                <td><%= index++ %></td>
-                <td><%= vol.getName() %></td>
-                <td><%= vol.getAge() %></td>
-                <td><%= vol.getPhoneNum() %></td>
-                <td><%= vol.getEmail() %></td>
-                <td><%= vol.getVolEmployment() %></td>
-                <td>
-                    <span class="badge <%= vol.getAvailability().equals("Available") ? "bg-success" : "bg-secondary" %>">
-                        <%= vol.getAvailability() %>
-                    </span>
-                </td>
-                <td>
-                    <span class="badge <%= vol.isLeader() == 1 ? "bg-primary" : "bg-light text-dark border" %>">
-                        <%= vol.isLeader() == 1 ? "Team Leader" : "Member" %>
-                    </span>
-                </td>
-                <td>
-                    <div style="display: flex; gap: 10px;">
-                        <form action="AppointLeaderServlet" method="POST" style="margin: 0;">
-                            <input type="hidden" name="volunteer_id" value="<%= vol.getUserID() %>">
-                            <input type="hidden" name="shelter_id" value="<%= vol.getShelterID() %>">
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                Appoint as Leader
-                            </button>
-                        </form>
-
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#reassignModal" 
-                            onclick="openReassignModal('<%= vol.getUserID() %>')">
-                            Reassign Shelter
-                        </button>
+            <h5 class="card-title">Shelter: <%= shelter.getShelterName() %></h5>
+            
+                <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <b>Volunteers Assigned to <%= shelter.getShelterName() %></b>
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <!-- Table with stripped rows -->
+                        <table class="table datatable">
+                          <thead>
+                              <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Name</th>
+                                  <th scope="col">Age</th>
+                                  <th scope="col">Phone No</th>
+                                  <th scope="col">Email</th>
+                                  <th scope="col">Employment</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Role</th>
+                                  <th scope="col">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <% if (volunteers != null && !volunteers.isEmpty()) {
+                                  int index = 1;
+                                  for (Volunteer vol : volunteers) { %>
+                              <tr>
+                                  <td><%= index++ %></td>
+                                  <td><%= vol.getName() %></td>
+                                  <td><%= vol.getAge() %></td>
+                                  <td><%= vol.getPhoneNum() %></td>
+                                  <td><%= vol.getEmail() %></td>
+                                  <td><%= vol.getVolEmployment() %></td>
+                                  <td>
+                                      <span class="badge <%= vol.getAvailability().equals("Available") ? "bg-success" : "bg-secondary" %>">
+                                          <%= vol.getAvailability() %>
+                                      </span>
+                                  </td>
+                                  <td>
+                                      <span class="badge <%= vol.isLeader() == 1 ? "bg-primary" : "bg-light text-dark border" %>">
+                                          <%= vol.isLeader() == 1 ? "Team Leader" : "Member" %>
+                                      </span>
+                                  </td>
+                                  <td>
+                                    <div class="filter">
+                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-info rounded-pill btn-sm ri-edit-box-fill"></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li><a class="dropdown-item" href="admin-viewvolunteer.jsp?userID=<%= vol.getUserID() %>">View</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="openReassignModal('<%= vol.getUserID() %>', 'volunteer')">Reassign Shelter</a></li>
+                                        </ul>
+                                    </div>
+                                  </td>
+                              </tr>
+                              <% } } else { %>
+                              <tr><td colspan="9" class="text-center">No volunteers found</td></tr>
+                               <% } %>
+                          </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                    
                     </div>
-                </td>
-            </tr>
-            <% } } else { %>
-            <tr><td colspan="9" class="text-center">No volunteers found</td></tr>
-             <% } %>
-        </tbody>
-    </table>
-              <!-- End Table with stripped rows -->
-
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <b>Victims Assigned to <%= shelter.getShelterName() %></b>
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table datatable">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Phone No</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Emergency Contact</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% 
+                                    List<Victim> victims = (List<Victim>) request.getAttribute("victims");
+                                    if (victims != null && !victims.isEmpty()) {
+                                        int rowNumber = 1;
+                                        for (Victim victim : victims) {
+                                %>
+                                <tr>
+                                    <th scope="row"><%= rowNumber++ %></th>
+                                    <td><%= victim.getName() %></td>
+                                    <td><%= victim.getUsername() %></td>
+                                    <td><%= victim.getPhoneNum() %></td>
+                                    <td><%= victim.getAddress() %></td>
+                                    <td><%= victim.getEmergencyContact() %></td> <!-- Show emergency contact -->
+                                </tr>
+                                <% 
+                                        }
+                                    } else { 
+                                %>
+                                <tr><td colspan="7" class="text-center">No victims found.</td></tr>
+                                <% } %>
+                            </tbody>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
+          <a href="AdminSheltersServlet" class="btn btn-secondary">Back</a>
         </div>
       </div>
     </section>
@@ -151,7 +203,8 @@
 
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <input type="hidden" name="volunteer_id" id="modalVolunteerId">
+                        <input type="hidden" name="userID" id="modalUserId">
+                        <input type="hidden" name="user_type" id="modalUserType">
 
                         <div class="mb-3">
                             <label for="shelterSelect" class="form-label fw-bold">Select Shelter</label>
@@ -213,8 +266,11 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script>
-    function openReassignModal(volunteerId) {
-        document.getElementById('modalVolunteerId').value = volunteerId;
+    function openReassignModal(userId, userType) {
+        document.getElementById('modalUserId').value = userId;
+        document.getElementById('modalUserType').value = userType;
+        var modal = new bootstrap.Modal(document.getElementById('reassignModal'));
+        modal.show();
     }
 
   </script>

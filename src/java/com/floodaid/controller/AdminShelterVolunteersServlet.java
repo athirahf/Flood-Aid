@@ -2,6 +2,8 @@ package com.floodaid.controller;
 
 import com.floodaid.model.Shelter;
 import com.floodaid.model.ShelterDAO;
+import com.floodaid.model.Victim;
+import com.floodaid.model.VictimDAO;
 import com.floodaid.model.Volunteer;
 import com.floodaid.model.VolunteerDAO;
 
@@ -36,6 +38,9 @@ public class AdminShelterVolunteersServlet extends HttpServlet {
         // Retrieve volunteers assigned to this shelter
         VolunteerDAO volunteerDAO = new VolunteerDAO();
         List<Volunteer> volunteers = volunteerDAO.getVolunteersByShelterID(shelterID);
+        
+        VictimDAO victimDAO = new VictimDAO();
+        List<Victim> victims = victimDAO.getVictimsByShelterID(shelterID);
 
         if (shelter == null) {
             response.sendRedirect("admin-shelters.jsp?error=shelter_not_found");
@@ -46,6 +51,7 @@ public class AdminShelterVolunteersServlet extends HttpServlet {
         request.setAttribute("shelter", shelter);
         request.setAttribute("shelters", shelters);
         request.setAttribute("volunteers", volunteers);
+        request.setAttribute("victims", victims);
 
         // Forward request to admin-sheltersvol.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin-sheltersvol.jsp");
